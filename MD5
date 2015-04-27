@@ -1,9 +1,9 @@
-7fdff9c26c03176b32dc42dd3d5e496d *DESCRIPTION
-dca7eebef09bea61d92ff1ad5c650874 *NAMESPACE
+16363dbd5acbe0786f9e7fcb5b17768b *DESCRIPTION
+c598c343576eecab8598222509e04feb *NAMESPACE
 23a007e18d043cf35dedd5851b56ee70 *R/ADEg.C1.R
 2bf233e89ea0f6047aeaf25ccb58fac8 *R/ADEg.R
 b59c3cedde2b271f7cc86f48aa415df6 *R/ADEg.S1.R
-9aae6b889c07965f5b2d9f9ba868d8a6 *R/ADEg.S2.R
+c455bcdcd96b7945a97b792d3e9727cc *R/ADEg.S2.R
 faef3f753ccb139fe60508736b784f5b *R/ADEg.T.R
 be814ef56be814a617cee2e398627b69 *R/ADEg.Tr.R
 e641b5f8766b125fddee55f923917024 *R/ADEgS.R
@@ -38,12 +38,12 @@ f947453979795d613ecb15efca50bd82 *R/Tr.class.R
 5f96036e43229774e55b5e7b20262c82 *R/Tr.match.R
 259e6dbba166f50b52725763dede47f6 *R/Tr.traject.R
 4b3b71aaf27dd371058b5551b9b7689b *R/ade4-kplot.R
-d58c6300e4b666130ba59082452b9b65 *R/ade4-plot.R
+b8feb8ba44dd926a0a9822678e74afa9 *R/ade4-plot.R
 3867f74305a74393c6b4bed75babb65a *R/ade4-scatter.R
 c9dae412c829eb7aab66e56dd68e0264 *R/adeGsenv.R
 94b0cb841f52b4c1276b40b7e9ca3c52 *R/genericMethod.R
 b264fd013c5be2918f54e86e5173dc80 *R/multiplot.R
-26541d810e205da16a782332394601e5 *R/panelfunctions.R
+b7c8edc134560c0b291993bb6a016350 *R/panelfunctions.R
 cd3035aad7ee190549860f64ae62517e *R/parameter.R
 bdb39d68e1f6f07f48921dd60146015d *R/s.Spatial.R
 a910eec458f82090b7fdc4b71a5fd235 *R/s.hist.R
@@ -55,7 +55,7 @@ f9abcac8f199b256ef08c75459bd083c *R/utilsclass.R
 97e275b870be1c248b9031e6489d745a *build/vignette.rds
 8fafbdfa19a28bc7f3a55e057632517e *inst/doc/adegraphics.R
 5c591d2ef2f17ebed0d8b663cde0cbfe *inst/doc/adegraphics.Rnw
-cf95a9bfb8332f50b0924b4dcb6a8e4a *inst/doc/adegraphics.pdf
+d19340d74218247e8ca222deeebeabdd *inst/doc/adegraphics.pdf
 82d74687d660102986e931a1dd796195 *man/ADEg-class.Rd
 04d2d39bbab2e82a441b1dbb4f996e29 *man/ADEg.C1-class.Rd
 fe42debb511ab4a929b9029778b4fdac *man/ADEg.S1-class.Rd
@@ -102,7 +102,7 @@ eebd649933116bbd0a3d157103e3893c *man/Tr.label-class.Rd
 c260b15ac673ffaae1c123cfd0d725c3 *man/adeg.panel.values.Rd
 616d9e555ee43859a71580ac9e9aa922 *man/adegpar.Rd
 b236f2fcf939e84c32c2f12947a6d646 *man/adegraphics-internal.Rd
-ce84445e6a133ff1774bed7b7b893a5d *man/adegraphics-package.Rd
+e069acef1076cbc5d0eac82a7df6ddc5 *man/adegraphics-package.Rd
 4583b908e3dba3541a6aead9d4847a8d *man/cbindADEg.Rd
 05cc963d6d5d5823ca1e4b08e33525e6 *man/changelatticetheme.Rd
 3685372b4e0b9847d9cc4c002d245eb4 *man/getcall-methods.Rd
