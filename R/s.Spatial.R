@@ -1,10 +1,10 @@
 s.Spatial <- function(spObj, col = TRUE, nclass = 5, plot = TRUE, storeData = TRUE, pos = -1, ...) {
   oldparamadeg <- adegpar()
   on.exit(adegpar(oldparamadeg))
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   adegtot <- adegpar(sortparameters$adepar)
   
-  xy <- coordinates(spObj)[, , drop = FALSE]  ## to access 'coordinates' in the 'imports' environment of 'adegraphics'
+  xy.spObj <- coordinates(spObj)[, , drop = FALSE]  ## to access 'coordinates' in the 'imports' environment of 'adegraphics'
   
   ## default values for non-used parameters
   defaultpar <- list(plabels = list(cex = 0), pgrid = list(draw = FALSE), ppoints = list(cex = 0), porigin = list(include = FALSE))
@@ -24,7 +24,7 @@ s.Spatial <- function(spObj, col = TRUE, nclass = 5, plot = TRUE, storeData = TR
   
   ## limits management 
   limsSp <- bbox(spObj)
-  lim.global <- .setlimits(minX = limsSp[1, 1], maxX = limsSp[1, 2], minY = limsSp[2, 1], maxY = limsSp[2, 2], includeOr = FALSE) 
+  lim.global <- setlimits2D(minX = limsSp[1, 1], maxX = limsSp[1, 2], minY = limsSp[2, 1], maxY = limsSp[2, 2], includeOr = FALSE) 
 	if(is.null(sortparameters$g.args$xlim))
   	sortparameters$g.args$xlim <- lim.global$xlim
   if(is.null(sortparameters$g.args$ylim))
@@ -40,9 +40,11 @@ s.Spatial <- function(spObj, col = TRUE, nclass = 5, plot = TRUE, storeData = TR
           if(is.numeric(spObj@data[, 1])) {
             nclasspretty <- length(pretty(spObj@data[, 1], nclass)) - 1
             nclasspretty <- length(pretty(spObj@data[, 1], nclasspretty)) - 1 ## repeated in order to have always the same number of class
-            colnew <- adegtot$ppalette$quanti(nclasspretty)
+            if(is.null(sortparameters$adepar$pSp$col))
+              colnew <- adegtot$ppalette$quanti(nclasspretty)
           } else
-            colnew <- adegtot$ppalette$quali(nlevels(as.factor(spObj@data[, 1])))
+            if(is.null(sortparameters$adepar$pSp$col))
+              colnew <- adegtot$ppalette$quali(nlevels(as.factor(spObj@data[, 1])))
         }
       } 
     } 
@@ -50,7 +52,7 @@ s.Spatial <- function(spObj, col = TRUE, nclass = 5, plot = TRUE, storeData = TR
     sortparameters$adepar$pSp$col <- colnew
 
     ## create map
-    object <- do.call("s.label", c(list(dfxy = xy, Sp = substitute(spObj), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$adepar, sortparameters$trellis, sortparameters$g.args))
+    object <- do.call("s.label", c(list(dfxy = xy.spObj, Sp = substitute(spObj), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$adepar, sortparameters$trellis, sortparameters$g.args))
     
   } else {
     ## Spatial*DataFrame object with several variables -> ADEgS
@@ -62,9 +64,11 @@ s.Spatial <- function(spObj, col = TRUE, nclass = 5, plot = TRUE, storeData = TR
           if(is.numeric(spObj@data[, i])) {
             nclasspretty <- length(pretty(spObj@data[, i], nclass)) - 1
             nclasspretty <- length(pretty(spObj@data[, i], nclasspretty)) - 1 ## repeated in order to have always the same number of class
-            colnew <- adegtot$ppalette$quanti(nclasspretty)
+            if(is.null(sortparameters$adepar$pSp$col))
+              colnew <- adegtot$ppalette$quanti(nclasspretty)
           } else
-            colnew <- adegtot$ppalette$quali(nlevels(as.factor(spObj@data[, i])))
+            if(is.null(sortparameters$adepar$pSp$col))
+              colnew <- adegtot$ppalette$quali(nlevels(as.factor(spObj@data[, i])))
         }
       } else {
         colnew <- col
@@ -74,7 +78,7 @@ s.Spatial <- function(spObj, col = TRUE, nclass = 5, plot = TRUE, storeData = TR
       sortparameters$adepar$psub$text <- names(spObj)[i]
       
       ## create map
-      listGraph <- c(listGraph, do.call("s.label", c(list(dfxy = xy, Sp = substitute(spObj[, i]), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$adepar, sortparameters$trellis, sortparameters$g.args)))
+      listGraph <- c(listGraph, do.call("s.label", c(list(dfxy = xy.spObj, Sp = substitute(spObj[, i]), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$adepar, sortparameters$trellis, sortparameters$g.args)))
     }
     names(listGraph) <- names(spObj)
     posmatrix <- layout2position(.n2mfrow(nvar), ng = nvar)

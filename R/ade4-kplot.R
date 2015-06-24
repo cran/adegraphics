@@ -14,7 +14,7 @@
   option <- match.arg(option)
   
   ## parameters management
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   
   if(option == "points") {
     params1 <- list()
@@ -79,7 +79,7 @@
   
   ## sort parameters for each graph
   graphsnames <- c("row", "col", "traj")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -148,7 +148,7 @@
   
   ## sort parameters for each graph
   graphsnames <- c("axis", "row", "col", "components")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -235,7 +235,7 @@
   
   ## sort parameters for each graph
   graphsnames <- c("row", "col", "traj", "eig")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -265,7 +265,7 @@
   ## prepare and create g3
   facets_eig <- reorder(as.factor(rep(levels(object$TL[, 1]), object$rank)), rep(1:length(object$rank), object$rank))
   if(!any(posieig == "none")) {
-    g3 <- do.call(".add.scatter.eig", c(list(eigvalue = substitute(object$Eig), nf = 1:ncol(object$Li), facets = facets_eig, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))[which.tab]
+    g3 <- do.call("plotEig", c(list(eigvalue = substitute(object$Eig), nf = 1:ncol(object$Li), facets = facets_eig, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))[which.tab]
     obj <- do.call("insert", list(g3, obj, posi = posieig, plot = FALSE, ratio = 0.2, inset = 0, dispatch = TRUE))
   }
   
@@ -310,7 +310,7 @@
   
   ## sort parameters for each graph
   graphsnames <- c("row", "col", "eig")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -328,7 +328,7 @@
   ## prepare and create g3
   facets_eig <- reorder(as.factor(rep(levels(object$TL[, 1]), object$rank)), rep(1:length(object$rank), object$rank))
   if(!any(posieig == "none")) {
-    g3 <- do.call(".add.scatter.eig", c(list(eigvalue = substitute(object$Eig), nf = 1:ncol(object$Li), facets = facets_eig, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))[which.tab]
+    g3 <- do.call("plotEig", c(list(eigvalue = substitute(object$Eig), nf = 1:ncol(object$Li), facets = facets_eig, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))[which.tab]
     obj <- do.call("insert", list(g3, obj, posi = posieig, plot = FALSE, ratio = 0.2, inset = 0, dispatch = TRUE))
   }
   
@@ -356,7 +356,7 @@
   
   ## sort parameters for each graph
   graphsnames <- c("col", "traj", "class")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -419,12 +419,12 @@
   
   ## sort parameters for each graph
   graphsnames <- c("row", "col")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## limits calcul
   df <- rbind(as.matrix(object$li), as.matrix(object$Tli), as.matrix(object$Tco))
   adegtot <- adegpar()
-  lim.global <- .setlimits(minX = min(df[,xax]), maxX = max(df[,xax]), minY = min(df[ ,yax]), maxY = max(df[ ,yax]), origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+  lim.global <- setlimits2D(minX = min(df[, xax]), maxX = max(df[, xax]), minY = min(df[, yax]), maxY = max(df[, yax]), origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
   
   ## parameters management
   params <- list()
@@ -460,7 +460,7 @@
   if(yax > object$nf)
     stop("Non convenient yax")
   
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   
   obj <- do.call("s.label", c(list(dfxy = substitute(object$Tli), xax = xax, yax = yax, facets = substitute(object$TL[, 1]), plot = plot, storeData = storeData, pos = pos - 2), adeg.par = sortparameters$adepar, trellis.par = sortparameters$trellis, g.args = sortparameters$g.args))[which.tab]
   

@@ -77,7 +77,7 @@ setMethod(
             }
         }
         
-        limits <- .setlimits(minX = minX, maxX = maxX, minY = minY, maxY = maxY, origin = rep(object@adeg.par$porigin$origin, le = 2),
+        limits <- setlimits2D(minX = minX, maxX = maxX, minY = minY, maxY = maxY, origin = rep(object@adeg.par$porigin$origin, le = 2),
                              aspect.ratio = object@adeg.par$paxes$aspectratio, includeOr = object@adeg.par$porigin$include)
         
         if(is.null(object@g.args$xlim) || !identical(object@s.misc$xfullcircle.update, object@g.args$fullcircle))
@@ -300,7 +300,7 @@ setMethod(
         
         graphsnames <- c("object", "densX", "densY", "link") 
         ## sorting parameters
-        sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+        sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
         update(object, sortparameters[[1]], plot = FALSE)
         ## setting positions
         positions <- layout2position(matrix(c(2, 4, 1, 3), 2, 2, byrow = TRUE), c(3, 1) / 2, c(3, 1) / 2, FALSE)

@@ -38,9 +38,9 @@ setMethod(
     callNextMethod() ## prepare graph
     
     if(object@adeg.par$p1d$horizontal && is.null(object@g.args$ylim))
-      object@g.args$ylim <- .setlimits1D(min(at), max(at), 0, FALSE)  
+      object@g.args$ylim <- setlimits1D(min(at), max(at), 0, FALSE)  
     if(!object@adeg.par$p1d$horizontal && is.null(object@g.args$xlim))
-      object@g.args$xlim <- .setlimits1D(min(at), max(at), 0, FALSE)
+      object@g.args$xlim <- setlimits1D(min(at), max(at), 0, FALSE)
     
     assign(nameobj, object, envir = parent.frame())
   })
@@ -86,7 +86,7 @@ s1d.dotplot <- function(score, at = 1:NROW(score), facets = NULL, plot = TRUE, s
   ## evaluation of some parameters
   thecall <- .expand.call(match.call())
   ## parameters sorted
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   
   ## facets
   if(!is.null(facets)) {

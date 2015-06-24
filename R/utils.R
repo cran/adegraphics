@@ -141,7 +141,7 @@ repList <- function(x, times) {
 }
 
 
-.setlimits1D <- function(mini, maxi, origin, includeOr) {
+setlimits1D <- function(mini, maxi, origin, includeOr) {
   ## computes limits for 1D plots
   if(includeOr) {
     newvalu <- .includeorigin(origin, mini, maxi)
@@ -162,7 +162,7 @@ repList <- function(x, times) {
 
 
 ## if aspect.ratio == "iso", we must have identical limits range in x and y
-.setlimits <- function(minX, maxX, minY, maxY, origin = c(0, 0), aspect.ratio = "iso", includeOr) {
+setlimits2D <- function(minX, maxX, minY, maxY, origin = c(0, 0), aspect.ratio = "iso", includeOr) {
   origin <- rep(origin, length.out = 2)
   if(includeOr) { ## to include origin
     newvalu <- list(.includeorigin(origin[1], minX, maxX), .includeorigin(origin[2], minY, maxY))
@@ -209,7 +209,7 @@ repList <- function(x, times) {
 ## the second to lattice parameters
 ## the third to graphics arguments
 ## the last to unused parameters
-.specificpar <- function(...) {
+sortparamADEg <- function(...) {
 
   if(try(is.list(...), silent = TRUE) == TRUE) 
     dots <- as.list(...)
@@ -218,7 +218,7 @@ repList <- function(x, times) {
   
   classtest <- try(list(...), silent = TRUE)
   if(class(classtest) == "try-error")
-    stop("wrong parameters list, error in .specificpar")
+    stop("wrong parameters list, error in sortparamADEg")
   
   trellis <- list()
   adegpar <- list()

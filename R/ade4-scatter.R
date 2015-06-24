@@ -16,7 +16,7 @@
   
   ## sort parameters for each graph
   graphsnames <- c("row", "col", "eig")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -61,7 +61,7 @@
   object <- do.call("superpose", list(g1, g2))
   object@Call <- call("superpose", g1@Call, g2@Call)
   if(position != "none") {
-    g3 <- do.call(".add.scatter.eig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))
+    g3 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))
     object <- do.call("insert", list(g3@Call, object@Call, posi = position, plot = FALSE, ratio = 0.25))
   }
   
@@ -100,11 +100,11 @@
   else if(method == 3)
     x.global <- rbind(as.matrix(x$l1), as.matrix(x$co))
   adegtot <- adegpar()
-  lim.global <- .setlimits(minX = min(x.global[, xax]), maxX = max(x.global[, xax]), minY = min(x.global[, yax]), maxY = max(x.global[, yax]), origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+  lim.global <- setlimits2D(minX = min(x.global[, xax]), maxX = max(x.global[, xax]), minY = min(x.global[, yax]), maxY = max(x.global[, yax]), origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
   
   ## sort parameters for each graph
   graphsnames <- c("row", "col", "eig")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -128,7 +128,7 @@
   object <- do.call("superpose", list(g1, g2))
   object@Call <- call("superpose", g1@Call, g2@Call)
   if(position != "none") {
-    g3 <- do.call(".add.scatter.eig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))
+    g3 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))
     object <- do.call("insert", list(g3@Call, object@Call, posi = position, plot = FALSE, ratio = 0.25))
   }
   
@@ -160,7 +160,7 @@
   oritab <- as.list(x$call)[[2]]
   
   ## parameter management
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   params <- list()
   params$g.args <- list(starSize = 0)
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
@@ -197,7 +197,7 @@
   
   ## parameter management
   graphsnames <- as.character(levels(indica))
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   params <- list()
   params <- lapply(1:length(graphsnames), function(i) {params[[i]] <- list(starSize = 0.5, ellipseSize = 0, plabels = list(cex = 1.25), psub = list(text = graphsnames[i]))})
   names(params) <- graphsnames
@@ -236,7 +236,7 @@
   
   ## sort parameters for each graph
   graphsnames <- c("row", "eig")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -248,7 +248,7 @@
   ## creation of each individual ADEg and of the final ADEgS
   object <- do.call("s.label", c(list(dfxy = substitute(x$li), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$row))
   if(position != "none") {
-    g2 <- do.call(".add.scatter.eig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))
+    g2 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))
     object <- do.call("insert", list(g2@Call, object@Call, posi = position, plot = FALSE, ratio = 0.25))
     names(object) <- graphsnames[1:length(object)]
   }
@@ -278,7 +278,7 @@
   
   ## sort parameters for each graph
   graphsnames <- c("row", "col", "eig")
-  sortparameters <- .paramsADEgS(..., graphsnames = graphsnames)
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## parameters management
   params <- list()
@@ -301,7 +301,7 @@
   object <- do.call("superpose", list(g1, g2))
   object@Call <- call("superpose", g1@Call, g2@Call)
   if(position != "none") {
-    g3 <- do.call(".add.scatter.eig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))
+    g3 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE), sortparameters$eig))
     object <- do.call("insert", list(g3@Call, object@Call, posi = position, plot = FALSE, ratio = 0.25))
   }
   
@@ -330,7 +330,7 @@
   type <- match.arg(type)
   
   ## parameter management
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   params <- list()
   
   if(type == "boxplot") {
@@ -550,7 +550,7 @@
   ADEglist <- list()
   for (i in which.var) {
     ## parameters management
-    sortparameters <- .specificpar(...)
+    sortparameters <- sortparamADEg(...)
     params <- list()
     
     ## data management
@@ -649,7 +649,7 @@
     which.var <- 1:ncol(evTab)
   
   ## parameter management
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   params <- list()
   params$adepar <- list(paxes = list(aspectratio = "fill", draw = TRUE), porigin = list(include = FALSE), pgrid = list(draw = FALSE), plabels = list(cex = 0))
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)

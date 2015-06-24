@@ -50,6 +50,11 @@ setMethod(
     if(!object@adeg.par$p1d$horizontal && is.null(object@g.args$xlim))
 	    object@g.args$xlim <- c(0, 1.1 * max(y))
     
+    if(object@adeg.par$p1d$horizontal)
+      object@g.args$scales$y$at <- pretty(object@g.args$ylim, n = 5)
+    else
+      object@g.args$scales$x$at <- pretty(object@g.args$xlim, n = 5)
+    
     assign(nameobj, object, envir = parent.frame())
   })
 
@@ -91,7 +96,7 @@ s1d.hist <- function(score, breaks = NULL, nclass = round(log2(length(score)) + 
   score <- eval(thecall$score, envir = sys.frame(sys.nframe() + pos))
   
   ## parameters sorted
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   
   ## facets
   if(!is.null(facets)) {

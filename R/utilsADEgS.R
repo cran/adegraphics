@@ -1,11 +1,11 @@
-.add.scatter.eig <- function(eigvalue, nf, xax = 1, yax = 2, col.plot = "black", col.kept = "grey", col = "white", facets = NULL, storeData = FALSE, plot = TRUE, pos = -1, ...) {
+plotEig <- function(eigvalue, nf, xax = 1, yax = 2, col.plot = "black", col.kept = "grey", col = "white", facets = NULL, plot = TRUE, storeData = FALSE, pos = -1, ...) {
   ## prepare
   col <- rep(col, length(eigvalue))
   col[nf] <- col.kept
   col[c(xax, yax)] <- col.plot
  
   ## parameters management
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   params <- list()
   params$adepar <- list(ppolygons = list(col = col), p1d = list(horizontal = FALSE), psub = list(position = "topright"), pgrid = list(draw = FALSE), pbackground = list(box = FALSE))
   sortparameters$adepar <- modifyList(params$adepar, sortparameters$adepar, keep.null = TRUE)
@@ -219,9 +219,9 @@ layout2position <- function(mat, widths = rep(1, NCOL(mat)), heights = rep(1, NR
 
 
 ## For analysis plot (ADEgS creation)
-.paramsADEgS <- function(..., graphsnames) {
+sortparamADEgS <- function(..., graphsnames, nbsubgraphs = rep(1, length(graphsnames))) {
   seppara <- .partoadeg(..., pattern = graphsnames)
-  sortparameters <- lapply(seppara, FUN = .specificpar)
+  sortparameters <- lapply(seppara, FUN = sortparamADEg)
   alist <- function(x) {
     aa <- list()
     for(i in 1:length(x))
@@ -230,9 +230,9 @@ layout2position <- function(mat, widths = rep(1, NCOL(mat)), heights = rep(1, NR
   }
   tomerge <- lapply(sortparameters, alist)
   oki <- lapply(tomerge, .mergingList)
-  ## aa <- .mergingList(aa) 
-  ## merging is some were doubled
-  ## return(lapply(sortparameters, alist))
+  if(!all(nbsubgraphs == rep(1, length(graphsnames))))
+    for (i in 1:length(nbsubgraphs))
+      oki[[i]] <- repList(oki[[i]], nbsubgraphs[i])
   return(oki)
 }
 

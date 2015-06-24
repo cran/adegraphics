@@ -2,9 +2,9 @@
 ### Encoding: UTF-8
 
 ###################################################
-### code chunk number 1: adegraphics.Rnw:35-36
+### code chunk number 1: adegraphics.Rnw:36-37
 ###################################################
-options(width = 90)
+options(width = 90, continue = " ")
 
 
 ###################################################
@@ -22,7 +22,7 @@ source("gargsVSclass.R")
 
 
 ###################################################
-### code chunk number 4: adegraphics.Rnw:197-199
+### code chunk number 4: adegraphics.Rnw:198-200
 ###################################################
 data(olympic)
 pca1 <- dudi.pca(olympic$tab, scannf = FALSE)
@@ -35,20 +35,20 @@ g1 <- s1d.barchart(pca1$eig, p1d.horizontal = F, ppolygons.col = "white")
 
 
 ###################################################
-### code chunk number 6: adegraphics.Rnw:213-215
+### code chunk number 6: adegraphics.Rnw:214-216
 ###################################################
 class(g1)
 showClass("C1.barchart")
 
 
 ###################################################
-### code chunk number 7: adegraphics.Rnw:219-220
+### code chunk number 7: adegraphics.Rnw:220-221
 ###################################################
 slotNames(g1)
 
 
 ###################################################
-### code chunk number 8: adegraphics.Rnw:239-240
+### code chunk number 8: adegraphics.Rnw:240-241
 ###################################################
 g1@data
 
@@ -60,7 +60,7 @@ g2 <- s.corcircle(pca1$co)
 
 
 ###################################################
-### code chunk number 10: adegraphics.Rnw:255-257
+### code chunk number 10: adegraphics.Rnw:256-258
 ###################################################
 class(g2)
 g2@g.args
@@ -74,7 +74,7 @@ g2@g.args
 
 
 ###################################################
-### code chunk number 12: adegraphics.Rnw:285-286
+### code chunk number 12: adegraphics.Rnw:286-287
 ###################################################
 getcall(g1) ## equivalent to g1@Call
 
@@ -94,7 +94,7 @@ zoom(g3, zoom = 2, center = c(2, -2))
 
 
 ###################################################
-### code chunk number 15: adegraphics.Rnw:350-351
+### code chunk number 15: adegraphics.Rnw:351-352
 ###################################################
 fac.score <- factor(olympic$score < 8000, labels = c("MT8000", "LT8000"))
 
@@ -133,7 +133,7 @@ class(g7)
 
 
 ###################################################
-### code chunk number 21: adegraphics.Rnw:408-414
+### code chunk number 21: adegraphics.Rnw:409-415
 ###################################################
 length(g7)
 names(g7)
@@ -251,7 +251,7 @@ g10@Call
 
 
 ###################################################
-### code chunk number 36: adegraphics.Rnw:625-627
+### code chunk number 36: adegraphics.Rnw:626-628
 ###################################################
 library(lattice)
 sort(names(trellis.par.get()))
@@ -267,13 +267,13 @@ ADEgS(c(g11, g12), layout = c(1, 2))
 
 
 ###################################################
-### code chunk number 38: adegraphics.Rnw:648-649
+### code chunk number 38: adegraphics.Rnw:649-650
 ###################################################
 names(adegpar())
 
 
 ###################################################
-### code chunk number 39: adegraphics.Rnw:654-656
+### code chunk number 39: adegraphics.Rnw:655-657
 ###################################################
 adegpar("ppoints")
 adegpar()$ppoints
@@ -306,7 +306,7 @@ ADEgS(c(g13, g14), layout = c(1, 2))
 
 
 ###################################################
-### code chunk number 43: adegraphics.Rnw:705-706
+### code chunk number 43: adegraphics.Rnw:706-707
 ###################################################
 adegpar(oldadegpar)
 
@@ -339,7 +339,90 @@ plot(coi1, XYmatch.pbackground.col = "steelblue",  XYmatch.pgrid.col = "red", ei
 
 
 ###################################################
-### code chunk number 48: plot28
+### code chunk number 48: ownfunction1
+###################################################
+tra1 <- list()
+tra1$time <- runif(300)
+tra1$distance <- tra1$time * 5 + rnorm(300)
+class(tra1) <- "track"
+
+
+###################################################
+### code chunk number 49: ownfunction2
+###################################################
+g1 <- s1d.hist(tra1$distance, psub.text = "distance", ppolygons.col = "blue", 
+               pgrid.draw = FALSE, plot = FALSE)
+g2 <- s1d.hist(tra1$distance / tra1$time, psub.text = "speed", ppolygons.col = "red", 
+               plot = FALSE)
+g31 <- s.label(cbind(tra1$time, tra1$distance), paxes = list(aspectratio = "fill", 
+               draw = TRUE), plot = FALSE)
+g32 <- xyplot(tra1$distance ~ tra1$time, aspect = g31@adeg.par$paxes$aspectratio, 
+              panel = function(x, y) {panel.lmline(x, y)})
+g3 <- superpose(g31, g32)
+G <- ADEgS(list(g1, g2, g3))
+
+
+###################################################
+### code chunk number 50: ownfunction3
+###################################################
+plot.track <- function(x, pos = -1, storeData = TRUE, plot = TRUE, ...) {
+ 
+ ## step 1 : sort parameters for each graph
+ graphsnames <- c("histDist", "histSpeed", "regression")
+ sortparameters <- sortparamADEgS(..., graphsnames = graphsnames, 
+                                  nbsubgraphs = c(1, 1, 2))
+ 
+ ## step 2 : define default values for graphical parameters
+ params <- list()
+ params[[1]] <- list(psub = list(text = "distance"), ppolygons = list(col = "blue"), 
+                     pgrid = list(draw = FALSE))
+ params[[2]] <- list(psub = list(text = "speed"), ppolygons = list(col = "red"), 
+                     pgrid = list(draw = FALSE))
+ params[[3]] <- list()
+ params[[3]]$l1 <- list(paxes = list(aspectratio = "fill", draw = TRUE))
+ params[[3]]$l2 <- list()
+ names(params) <- graphsnames
+ sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+ 
+ ## step 3 : create each individual plot (ADEg)
+ g1 <- do.call("s1d.hist", c(list(score = substitute(x$distance), plot = FALSE, 
+               storeData = storeData, pos = pos - 2), sortparameters[[1]]))
+ g2 <- do.call("s1d.hist", c(list(score = substitute(x$distance / x$time), 
+               plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
+ g31 <- do.call("s.label", c(list(dfxy = substitute(cbind(x$time, x$distance)), plot = 
+               FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]][[1]]))
+ g32 <- xyplot(x$distance ~ x$time, aspect = g31@adeg.par$paxes$aspectratio,
+               panel = function(x, y) {panel.lmline(x, y)})
+ g3 <- do.call("superpose", list(g31, g32))
+ g3@Call <- call("superpose", g31@Call, g32$call)
+ 
+ 
+ ## step 4 : create the multiple plot (ADEgS)
+ lay <- matrix(1:3, 1, 3)
+ object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3), positions = 
+               layout2position(lay), add = matrix(0, ncol = 3, nrow = 3), 
+               Call = match.call())
+ names(object) <- graphsnames
+ if(plot)
+   print(object)
+ invisible(object)
+}
+
+
+###################################################
+### code chunk number 51: ownfunction3
+###################################################
+plot(tra1)
+
+
+###################################################
+### code chunk number 52: ownfunction4
+###################################################
+plot(tra1, histDist.ppoly.col = "green", pbackground.col = "grey")
+
+
+###################################################
+### code chunk number 53: plot28
 ###################################################
 data(meaudret)
 g16 <- s.label(pca3$li, plot = FALSE)
@@ -348,7 +431,7 @@ ADEgS(c(g16, g17), layout = c(1, 2))
 
 
 ###################################################
-### code chunk number 49: plot29
+### code chunk number 54: plot29
 ###################################################
 g18 <- s.class(pca3$li, fac = meaudret$design$season, plot = FALSE)
 g19 <- s.class(pca3$li, fac = meaudret$design$season, ellipseSize = 0, chullSize = 1, starSize = 0.5, col = TRUE, plot = FALSE)
@@ -359,7 +442,7 @@ ADEgS(c(g18, g19, g20, g21), layout = c(2, 2))
 
 
 ###################################################
-### code chunk number 50: plot30
+### code chunk number 55: plot30
 ###################################################
 data(rpjdl)
 coa2 <- dudi.coa(rpjdl$fau, scannf = FALSE, nf = 3)
@@ -371,7 +454,7 @@ ADEgS(c(g22, g23, g24, g25), layout = c(2, 2))
 
 
 ###################################################
-### code chunk number 51: plot31
+### code chunk number 56: plot31
 ###################################################
 score1 <- c(rnorm(1000, mean = -0.5, sd = 0.5), rnorm(1000, mean = 1))
 fac1 <- rep(c("A", "B"), each = 1000)
@@ -383,7 +466,7 @@ ADEgS(c(g26, g27, g28, g29), layout = c(2, 2))
 
 
 ###################################################
-### code chunk number 52: plot32
+### code chunk number 57: plot32
 ###################################################
 library(Guerry)
 library(sp)
@@ -396,13 +479,13 @@ ADEgS(c(g30, g31), layout = c(1, 2))
 
 
 ###################################################
-### code chunk number 53: plot32b
+### code chunk number 58: plot32b
 ###################################################
 s.Spatial(gfrance85[,7:12])
 
 
 ###################################################
-### code chunk number 54: plot33
+### code chunk number 59: plot33
 ###################################################
 data(mafragh, package = "ade4")
 g32 <- s.label(mafragh$xy, nb = mafragh$nb, plot = FALSE)
@@ -411,7 +494,7 @@ ADEgS(c(g32, g33), layout = c(1, 2))
 
 
 ###################################################
-### code chunk number 55: plot34
+### code chunk number 60: plot34
 ###################################################
 data(euro123, package = "ade4")
 df <- rbind.data.frame(euro123$in78, euro123$in86, euro123$in97)

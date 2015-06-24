@@ -45,9 +45,9 @@ setMethod(
     callNextMethod() ## prepare graph
     
     if(object@adeg.par$p1d$horizontal && is.null(object@g.args$ylim))
-      object@g.args$ylim <- .setlimits1D(min(at), max(at), 0, FALSE)
+      object@g.args$ylim <- setlimits1D(min(at), max(at), 0, FALSE)
     if(!object@adeg.par$p1d$horizontal && is.null(object@g.args$xlim))
-      object@g.args$xlim <- .setlimits1D(min(at), max(at), 0, FALSE)
+      object@g.args$xlim <- setlimits1D(min(at), max(at), 0, FALSE)
     
     assign(name_obj, object, envir = parent.frame())
   })
@@ -119,7 +119,7 @@ s1d.interval <- function(score1, score2, at = 1:NROW(score1), method = c("bars",
     stop("Not yet implemented for data.frame with only one column, please convert into vector")
   
   ## parameters sorted
-  sortparameters <- .specificpar(...)
+  sortparameters <- sortparamADEg(...)
   
   ## facets
   if(!is.null(facets)) {
