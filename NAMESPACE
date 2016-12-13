@@ -5,9 +5,10 @@ import("utils")
 importFrom("ade4", "covfacwt", "covwt", "dudi.pca", "inertia.dudi", "kplot", "meanfacwt", "scatter", "score", "varfacwt", "varwt")
 importFrom("graphics", "hist", "plot")
 importFrom("KernSmooth", "bkde", "bkde2D")
+importFrom("latticeExtra", "panel.ellipse")
 importFrom("methods", "callNextMethod", "new", "show", "validObject")
 importFrom("RColorBrewer", "brewer.pal")
-importFrom("sp", "GridTopology", "Polygon", "Polygons", "sp.grid", "sp.lines", "sp.points", "sp.polygons", "SpatialGrid", "SpatialPointsDataFrame", "SpatialPolygons", "SpatialPolygonsDataFrame", "sppanel")
+importFrom("sp", "GridTopology", "is.projected", "Polygon", "Polygons", "proj4string", "sp.grid", "sp.lines", "sp.points", "sp.polygons", "SpatialGrid", "SpatialPointsDataFrame", "SpatialPolygons", "SpatialPolygonsDataFrame", "sppanel")
 importMethodsFrom("sp", "[", "bbox", "coerce", "coordinates", "over")
 importClassesFrom("sp", "Spatial", "SpatialGrid", "SpatialGridDataFrame", "SpatialLines", "SpatialLinesDataFrame", "SpatialPoints", "SpatialPointsDataFrame", "SpatialPolygons", "SpatialPolygonsDataFrame")
 importFrom("stats", "as.formula", "biplot", "coefficients", "dnorm", "formula", "lm", "loess", "predict", "quantile", "reorder", "runif", "screeplot", "weighted.mean")
@@ -31,6 +32,7 @@ S3method("plot", "discrimin")
 S3method("plot", "dpcoa")
 S3method("plot", "fca")
 S3method("plot", "foucart")
+S3method("plot", "inertia")
 S3method("plot", "krandboot")
 S3method("plot", "krandxval")
 S3method("plot", "mcoa")
@@ -99,6 +101,7 @@ export(
   "s1d.label",
   "s1d.class",
   "s1d.curve",
+  "s1d.curves",
   "s1d.density",
   "s1d.distri",
   "s1d.dotplot",
@@ -162,6 +165,7 @@ exportClasses(
   "ADEg.Tr",
   "C1.barchart",
   "C1.curve",
+  "C1.curves",
   "C1.density",
   "C1.dotplot",
   "C1.gauss",

@@ -122,6 +122,9 @@ setMethod(
         if(object@adeg.par$paxes$aspectratio != "iso")
             object@adeg.par$pgrid$text$cex <- 0 ## grid cell size has no meaning
         
+        if(!is.null(object@g.args$Sp))
+          object@adeg.par$paxes$aspectratio <- ifelse(is.na(proj4string(object@g.args$Sp)) || is.projected(object@g.args$Sp), 1, 1/cos((mean(object@g.args$ylim) * pi)/180))
+        
         ## if grid and axes are drawn, no text indication
         if(object@adeg.par$pgrid$draw && object@adeg.par$paxes$draw)
             object@adeg.par$pgrid$text$cex <- 0
@@ -182,7 +185,7 @@ setMethod(
         ## neighbouring object management
         if(any(names(object@g.args) == "nbobject")) {
             nbobj <- object@g.args$nbobject
-            if(class(nbobj) != "nb")
+            if(!inherits(nbobj, "nb") & !inherits(nbobj, "listw"))
                 stop("wrong class for the nb object")
             pnb <- object@adeg.par$pnb
             do.call("adeg.panel.nb", args = list(nbobject = nbobj, coords = cbind(x, y), col.edge = pnb$edge$col, lwd = pnb$edge$lwd, lty = pnb$edge$lty, pch = pnb$node$pch, cex = pnb$node$cex, col.node = pnb$node$col, alpha = pnb$node$alpha))

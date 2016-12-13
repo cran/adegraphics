@@ -129,7 +129,7 @@
 
 "plot.betcoi" <- function(x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
   if(!inherits(x, "betcoi"))
-  	stop("Object of class 'betcoi' expected")
+    stop("Object of class 'betcoi' expected")
   if((xax == yax) || (x$nf == 1))
     stop("One axis only : not yet implemented")
   if(length(xax) > 1 | length(yax) > 1)
@@ -193,7 +193,7 @@
 
 "plot.betrlq" <- function(x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
   if(!inherits(x, "betrlq")) 
-  	stop("Object of class 'betrlq' expected")
+    stop("Object of class 'betrlq' expected")
   if((xax == yax) || (x$nf == 1))
     stop("One axis only : not yet implemented")
   if(length(xax) > 1 | length(yax) > 1)
@@ -244,7 +244,7 @@
 
 "plot.between" <- function(x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
   if(!inherits(x, "between")) 
-  	stop("Object of class 'between' expected")
+    stop("Object of class 'between' expected")
   if((xax == yax) || (x$nf == 1))
     stop("One axis only : not yet implemented")
   if(length(xax) > 1 | length(yax) > 1)
@@ -516,13 +516,13 @@
     stop("Non convenient xax")
   if(yax > x$nf) 
     stop("Non convenient yax")
-
+  
   appel <- as.list(x$call)
   dfX <- appel$df
   
   ## sort parameters for each graph
   graphsnames <- c("axes", "categories", "categcoll", "collections")
-
+  
   vec <- c(2, 1, 1, 1)
   sortparameters <- sortparamADEgS(..., graphsnames = graphsnames, nbsubgraphs = vec)
   
@@ -534,9 +534,9 @@
   params[[2]] <- list(psub = list(text = "Categories"), plabels = list(cex = 1.25))
   params[[3]] <- list(psub = list(text = "Categories and collections"), ppoints = list(pch = 16, cex = 1.2), plines = list(col = "transparent"), pellipses = list(axes = list(draw = FALSE)), ellipseSize = 1, plabels = list(cex = 1.25))
   if(!is.null(x$RaoDiv))
-      params[[4]] <- list(psub = list(text = "Rao Divcs", position = "topleft"))
+    params[[4]] <- list(psub = list(text = "Rao Divcs", position = "topleft"))
   else
-      params[[4]] <- list(psub = list(text = "Collections", position = "bottomleft"))
+    params[[4]] <- list(psub = list(text = "Collections", position = "bottomleft"))
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
@@ -547,12 +547,12 @@
   g2 <- do.call("s.label", c(list(dfxy = substitute(x$dls), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
   g3 <- do.call("s.distri", c(list(dfxy = substitute(x$dls), dfdistri = substitute(t(dfX)), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
   if(!is.null(x$RaoDiv))
-      g4 <- do.call("s.value", c(list(dfxy = substitute(x$li), z = substitute(x$RaoDiv), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
+    g4 <- do.call("s.value", c(list(dfxy = substitute(x$li), z = substitute(x$RaoDiv), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
   else
-      g4 <- do.call("s.label", c(list(dfxy = substitute(x$li), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
+    g4 <- do.call("s.label", c(list(dfxy = substitute(x$li), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
   ## ADEgS creation
- 
-      object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4), positions = layout2position(matrix(c(1, 2, 3, 4), 2, 2)), add = matrix(0, ncol = 4, nrow = 4), Call = match.call())
+  
+  object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4), positions = layout2position(matrix(c(1, 2, 3, 4), 2, 2)), add = matrix(0, ncol = 4, nrow = 4), Call = match.call())
   
   names(object) <- graphsnames
   if(plot)
@@ -562,149 +562,149 @@
 
 
 "plot.betdpcoa" <- function(x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
-    if(!(inherits(x, "betdpcoa") | inherits(x, "betwitdpcoa"))) 
-        stop("Object of class 'betdpcoa' expected")
-    if((xax == yax) || (x$nf == 1))
-        stop("One axis only : not yet implemented")
-    if(length(xax) > 1 | length(yax) > 1)
-        stop("Not implemented for multiple xax/yax")
-    
-    if(xax > x$nf) 
-        stop("Non convenient xax")
-    if(yax > x$nf) 
-        stop("Non convenient yax")
-    
-    appel <- as.list(x$call)
-    dfX <- as.list(eval.parent(appel$x)$call)$df
-    
-    ## sort parameters for each graph
-    graphsnames <- c("axes", "class", "categories", "Xax")
-    sortparameters <- sortparamADEgS(..., graphsnames = graphsnames, nbsubgraphs = c(2, 1, 1, 1))
-    
-    ## default values for parameters
-    params <- list()
-    params[[1]] <- list()
-    params[[1]]$l1 <- list(psub = list(text = "Principal axes", position = "topleft"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
-    params[[1]]$l2 <- list(psub = list(text = "Eigenvalues"), pbackground = list(box = TRUE))
-    params[[2]] <- list(psub = list(text = "Classes and collections"), plabels = list(cex = 1.25))
-    params[[3]] <- list(psub = list(text = "Categories and collections"), ppoints = list(pch = 16, cex = 1.2), plines = list(col = "transparent"), pellipses = list(axes = list(draw = FALSE)), ellipseSize = 1, plabels = list(cex = 1.25))
-    params[[4]] <- list(psub = list(text = "Unconstrained axes"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
-    
-    names(params) <- graphsnames
-    sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
-    
-    ## creation of each individual ADEg
-    g11 <- do.call("s.corcircle", c(list(dfxy = substitute(x$c1), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[1]]))
-    g12 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[2]]))
-    g1 <- do.call("insert", list(g12@Call, g11@Call, posi = "bottomleft", plot = FALSE, ratio = 0.25, inset = 0))
-    g2 <- do.call("s.class", c(list(dfxy = substitute(x$ls), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
-    g3 <- do.call("s.distri", c(list(dfxy = substitute(x$dls), dfdistri = substitute(t(dfX)), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
-    g4 <- do.call("s.corcircle", c(list(dfxy = substitute(x$as), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
- 
-    object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4), positions = layout2position(matrix(c(1, 2, 3, 4), 2, 2)), add = matrix(0, ncol = 4, nrow = 4), Call = match.call())
-   
-    names(object) <- graphsnames
-    if(plot)
-        print(object)
-    invisible(object)
+  if(!(inherits(x, "betdpcoa") | inherits(x, "betwitdpcoa"))) 
+    stop("Object of class 'betdpcoa' expected")
+  if((xax == yax) || (x$nf == 1))
+    stop("One axis only : not yet implemented")
+  if(length(xax) > 1 | length(yax) > 1)
+    stop("Not implemented for multiple xax/yax")
+  
+  if(xax > x$nf) 
+    stop("Non convenient xax")
+  if(yax > x$nf) 
+    stop("Non convenient yax")
+  
+  appel <- as.list(x$call)
+  dfX <- as.list(eval.parent(appel$x)$call)$df
+  
+  ## sort parameters for each graph
+  graphsnames <- c("axes", "class", "categories", "Xax")
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames, nbsubgraphs = c(2, 1, 1, 1))
+  
+  ## default values for parameters
+  params <- list()
+  params[[1]] <- list()
+  params[[1]]$l1 <- list(psub = list(text = "Principal axes", position = "topleft"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
+  params[[1]]$l2 <- list(psub = list(text = "Eigenvalues"), pbackground = list(box = TRUE))
+  params[[2]] <- list(psub = list(text = "Classes and collections"), plabels = list(cex = 1.25))
+  params[[3]] <- list(psub = list(text = "Categories and collections"), ppoints = list(pch = 16, cex = 1.2), plines = list(col = "transparent"), pellipses = list(axes = list(draw = FALSE)), ellipseSize = 1, plabels = list(cex = 1.25))
+  params[[4]] <- list(psub = list(text = "Unconstrained axes"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
+  
+  names(params) <- graphsnames
+  sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+  
+  ## creation of each individual ADEg
+  g11 <- do.call("s.corcircle", c(list(dfxy = substitute(x$c1), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[1]]))
+  g12 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[2]]))
+  g1 <- do.call("insert", list(g12@Call, g11@Call, posi = "bottomleft", plot = FALSE, ratio = 0.25, inset = 0))
+  g2 <- do.call("s.class", c(list(dfxy = substitute(x$ls), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
+  g3 <- do.call("s.distri", c(list(dfxy = substitute(x$dls), dfdistri = substitute(t(dfX)), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
+  g4 <- do.call("s.corcircle", c(list(dfxy = substitute(x$as), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
+  
+  object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4), positions = layout2position(matrix(c(1, 2, 3, 4), 2, 2)), add = matrix(0, ncol = 4, nrow = 4), Call = match.call())
+  
+  names(object) <- graphsnames
+  if(plot)
+    print(object)
+  invisible(object)
 }
 
 
 "plot.witdpcoa" <- function(x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
-    if(!inherits(x, "witdpcoa")) 
-        stop("Object of class 'witdpcoa' expected")
-    if((xax == yax) || (x$nf == 1))
-        stop("One axis only : not yet implemented")
-    if(length(xax) > 1 | length(yax) > 1)
-        stop("Not implemented for multiple xax/yax")
-    
-    if(xax > x$nf) 
-        stop("Non convenient xax")
-    if(yax > x$nf) 
-        stop("Non convenient yax")
-    
-    appel <- as.list(x$call)
-    dfX <- as.list(eval.parent(appel$x)$call)$df
-    
-    ## sort parameters for each graph
-    graphsnames <- c("axes", "class", "categories", "Xax")  
-    sortparameters <- sortparamADEgS(..., graphsnames = graphsnames, nbsubgraphs = c(2, 1, 1, 1))
-    
-    ## default values for parameters
-    params <- list()
-    params[[1]] <- list()
-    params[[1]]$l1 <- list(psub = list(text = "Principal axes", position = "topleft"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
-    params[[1]]$l2 <- list(psub = list(text = "Eigenvalues"), pbackground = list(box = TRUE))
-    params[[2]] <- list(psub = list(text = "Classes and collections"), plabels = list(cex = 1.25))
-    params[[3]] <- list(psub = list(text = "Categories and collections"), ppoints = list(pch = 16, cex = 1.2), plines = list(col = "transparent"), pellipses = list(axes = list(draw = FALSE)), ellipseSize = 1, plabels = list(cex = 1.25))
-    params[[4]] <- list(psub = list(text = "Unconstrained axes"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
-    
-    names(params) <- graphsnames
-    sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
-    
-    ## creation of each individual ADEg
-    g11 <- do.call("s.corcircle", c(list(dfxy = substitute(x$c1), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[1]]))
-    g12 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[2]]))
-    g1 <- do.call("insert", list(g12@Call, g11@Call, posi = "bottomleft", plot = FALSE, ratio = 0.25, inset = 0))
-    g2 <- do.call("s.class", c(list(dfxy = substitute(x$ls), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
-    g3 <- do.call("s.distri", c(list(dfxy = substitute(x$dls), dfdistri = substitute(t(dfX)), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
-    g4 <- do.call("s.corcircle", c(list(dfxy = substitute(x$as), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
-    
-    object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4), positions = layout2position(matrix(c(1, 2, 3, 4), 2, 2)), add = matrix(0, ncol = 4, nrow = 4), Call = match.call())
-    
-    names(object) <- graphsnames
-    if(plot)
-        print(object)
-    invisible(object)
+  if(!inherits(x, "witdpcoa")) 
+    stop("Object of class 'witdpcoa' expected")
+  if((xax == yax) || (x$nf == 1))
+    stop("One axis only : not yet implemented")
+  if(length(xax) > 1 | length(yax) > 1)
+    stop("Not implemented for multiple xax/yax")
+  
+  if(xax > x$nf) 
+    stop("Non convenient xax")
+  if(yax > x$nf) 
+    stop("Non convenient yax")
+  
+  appel <- as.list(x$call)
+  dfX <- as.list(eval.parent(appel$x)$call)$df
+  
+  ## sort parameters for each graph
+  graphsnames <- c("axes", "class", "categories", "Xax")  
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames, nbsubgraphs = c(2, 1, 1, 1))
+  
+  ## default values for parameters
+  params <- list()
+  params[[1]] <- list()
+  params[[1]]$l1 <- list(psub = list(text = "Principal axes", position = "topleft"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
+  params[[1]]$l2 <- list(psub = list(text = "Eigenvalues"), pbackground = list(box = TRUE))
+  params[[2]] <- list(psub = list(text = "Classes and collections"), plabels = list(cex = 1.25))
+  params[[3]] <- list(psub = list(text = "Categories and collections"), ppoints = list(pch = 16, cex = 1.2), plines = list(col = "transparent"), pellipses = list(axes = list(draw = FALSE)), ellipseSize = 1, plabels = list(cex = 1.25))
+  params[[4]] <- list(psub = list(text = "Unconstrained axes"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
+  
+  names(params) <- graphsnames
+  sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+  
+  ## creation of each individual ADEg
+  g11 <- do.call("s.corcircle", c(list(dfxy = substitute(x$c1), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[1]]))
+  g12 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[2]]))
+  g1 <- do.call("insert", list(g12@Call, g11@Call, posi = "bottomleft", plot = FALSE, ratio = 0.25, inset = 0))
+  g2 <- do.call("s.class", c(list(dfxy = substitute(x$ls), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
+  g3 <- do.call("s.distri", c(list(dfxy = substitute(x$dls), dfdistri = substitute(t(dfX)), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
+  g4 <- do.call("s.corcircle", c(list(dfxy = substitute(x$as), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
+  
+  object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4), positions = layout2position(matrix(c(1, 2, 3, 4), 2, 2)), add = matrix(0, ncol = 4, nrow = 4), Call = match.call())
+  
+  names(object) <- graphsnames
+  if(plot)
+    print(object)
+  invisible(object)
 }
 
 
 "plot.betwitdpcoa" <- function(x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
-    if(!inherits(x, "betwitdpcoa")) 
-        stop("Object of class 'betwitdpcoa' expected")
-    if((xax == yax) || (x$nf == 1))
-        stop("One axis only : not yet implemented")
-    if(length(xax) > 1 | length(yax) > 1)
-        stop("Not implemented for multiple xax/yax")
-    
-    if(xax > x$nf) 
-        stop("Non convenient xax")
-    if(yax > x$nf) 
-        stop("Non convenient yax")
-    
-    appel <- as.list(x$call)
-    dfX <- as.list(eval.parent(appel$x)$call)$df
-    
-    ## sort parameters for each graph
-    graphsnames <- c("axes", "class", "categories", "Xax")  
-    sortparameters <- sortparamADEgS(..., graphsnames = graphsnames, nbsubgraphs = c(2, 1, 1, 1))
-    
-    ## default values for parameters
-    params <- list()
-    params[[1]] <- list()
-    params[[1]]$l1 <- list(psub = list(text = "Principal axes", position = "topleft"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
-    params[[1]]$l2 <- list(psub = list(text = "Eigenvalues"), pbackground = list(box = TRUE))
-    params[[2]] <- list(psub = list(text = "Classes and collections"), plabels = list(cex = 1.25))
-    params[[3]] <- list(psub = list(text = "Categories and collections"), ppoints = list(pch = 16, cex = 1.2), plines = list(col = "transparent"), pellipses = list(axes = list(draw = FALSE)), ellipseSize = 1, plabels = list(cex = 1.25))
-    params[[4]] <- list(psub = list(text = "Unconstrained axes"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
-    
-    names(params) <- graphsnames
-    sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
-    
-    ## creation of each individual ADEg
-    g11 <- do.call("s.corcircle", c(list(dfxy = substitute(x$c1), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[1]]))
-    g12 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[2]]))
-    g1 <- do.call("insert", list(g12@Call, g11@Call, posi = "bottomleft", plot = FALSE, ratio = 0.25, inset = 0))
-    g2 <- do.call("s.class", c(list(dfxy = substitute(x$ls), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
-    g3 <- do.call("s.distri", c(list(dfxy = substitute(x$dls), dfdistri = substitute(t(dfX)), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
-    g4 <- do.call("s.corcircle", c(list(dfxy = substitute(x$as), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
-    
-    object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4), positions = layout2position(matrix(c(1, 2, 3, 4), 2, 2)), add = matrix(0, ncol = 4, nrow = 4), Call = match.call())
-    
-    names(object) <- graphsnames
-    if(plot)
-        print(object)
-    invisible(object)
+  if(!inherits(x, "betwitdpcoa")) 
+    stop("Object of class 'betwitdpcoa' expected")
+  if((xax == yax) || (x$nf == 1))
+    stop("One axis only : not yet implemented")
+  if(length(xax) > 1 | length(yax) > 1)
+    stop("Not implemented for multiple xax/yax")
+  
+  if(xax > x$nf) 
+    stop("Non convenient xax")
+  if(yax > x$nf) 
+    stop("Non convenient yax")
+  
+  appel <- as.list(x$call)
+  dfX <- as.list(eval.parent(appel$x)$call)$df
+  
+  ## sort parameters for each graph
+  graphsnames <- c("axes", "class", "categories", "Xax")  
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames, nbsubgraphs = c(2, 1, 1, 1))
+  
+  ## default values for parameters
+  params <- list()
+  params[[1]] <- list()
+  params[[1]]$l1 <- list(psub = list(text = "Principal axes", position = "topleft"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
+  params[[1]]$l2 <- list(psub = list(text = "Eigenvalues"), pbackground = list(box = TRUE))
+  params[[2]] <- list(psub = list(text = "Classes and collections"), plabels = list(cex = 1.25))
+  params[[3]] <- list(psub = list(text = "Categories and collections"), ppoints = list(pch = 16, cex = 1.2), plines = list(col = "transparent"), pellipses = list(axes = list(draw = FALSE)), ellipseSize = 1, plabels = list(cex = 1.25))
+  params[[4]] <- list(psub = list(text = "Unconstrained axes"), pbackground = list(box = FALSE), plabels = list(cex = 1.25))
+  
+  names(params) <- graphsnames
+  sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+  
+  ## creation of each individual ADEg
+  g11 <- do.call("s.corcircle", c(list(dfxy = substitute(x$c1), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[1]]))
+  g12 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]][[2]]))
+  g1 <- do.call("insert", list(g12@Call, g11@Call, posi = "bottomleft", plot = FALSE, ratio = 0.25, inset = 0))
+  g2 <- do.call("s.class", c(list(dfxy = substitute(x$ls), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
+  g3 <- do.call("s.distri", c(list(dfxy = substitute(x$dls), dfdistri = substitute(t(dfX)), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
+  g4 <- do.call("s.corcircle", c(list(dfxy = substitute(x$as), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
+  
+  object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4), positions = layout2position(matrix(c(1, 2, 3, 4), 2, 2)), add = matrix(0, ncol = 4, nrow = 4), Call = match.call())
+  
+  names(object) <- graphsnames
+  if(plot)
+    print(object)
+  invisible(object)
 }
 
 
@@ -747,7 +747,7 @@
   g1 <- do.call("superpose", list(g11, g12))
   g1@Call <- call("superpose", g11@Call, g12@Call)
   g21 <- do.call("s.corcircle", c(list(dfxy = substitute(x$Tax[x$T4[, 2] == 1, ]), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]][[1]]))
-  g22 <- do.call("plotEig", c(list(eigvalue = substitute(x$pseudoeig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, storeData = storeData, pos = pos - 2), sortparameters[[2]][[2]]))
+  g22 <- do.call("plotEig", c(list(eigvalue = substitute(x$pseudoeig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]][[2]]))
   g2 <- do.call("insert", list(g22@Call, g21@Call, posi = "bottomleft", plot = FALSE, ratio = 0.25, inset = 0))
   g3 <- do.call("s.arrow", c(list(dfxy = substitute(x$Tco), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
   g4 <- do.call("s.label", c(list(dfxy = substitute(x$cov2), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
@@ -950,16 +950,16 @@
 
 "plot.procuste" <- function(x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
   if(!inherits(x, "procuste")) 
-  	stop("Object of class 'procuste' expected")
+    stop("Object of class 'procuste' expected")
   if((xax == yax) || (x$nf == 1))
-  	stop("One axis only : not yet implemented")
+    stop("One axis only : not yet implemented")
   if(length(xax) > 1 | length(yax) > 1)
-  	stop("Not implemented for multiple xax/yax")
+    stop("Not implemented for multiple xax/yax")
   
   if(xax > x$nf) 
-  	stop("Non convenient xax")
+    stop("Non convenient xax")
   if(yax > x$nf) 
-  	stop("Non convenient yax")
+    stop("Non convenient yax")
   
   ## sort parameters for each graph
   graphsnames <- c("Xloadings", "Yloadings", "eig", "XYmatch", "Xrow", "Yrow")
@@ -989,7 +989,7 @@
   object <- new(Class = "ADEgS", ADEglist = list(g1, g2, g3, g4, g5, g6), positions = layout2position(lay), add = matrix(0, ncol = 6, nrow = 6), Call = match.call())
   names(object) <- graphsnames
   if(plot)
-  	print(object)
+    print(object)
   invisible(object)
 }
 
@@ -1348,7 +1348,7 @@
   params[[2]] <- list(p1d.horizontal = FALSE, paxes.draw = TRUE, method = "bars")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
-
+  
   lab <- list(list(labels = rownames(x$stats), rot = 90))
   names(lab) <- ifelse(sortparameters[[1]]$p1d.horizontal == FALSE, "x", "y")
   ## creation of each individual ADEg
@@ -1359,6 +1359,210 @@
   object <- superpose(g1, g2)
   object@Call <- match.call()
   names(object) <- graphsnames
+  if(plot)
+    print(object)
+  invisible(object)
+}
+
+
+"plot.inertia" <- function(x, xax = 1, yax = 2, cont = 0.1, type = c("label", "cross", "ellipse", "both"), ellipseSize = 1.5, 
+                           posieig = "none", plot = TRUE, storeData = TRUE, pos = -1, ...) { 
+  
+  if(!inherits(x, "inertia")) 
+    stop("Object of class 'inertia' expected")
+  
+  ## data management
+  ori <- as.list(x$call)
+  evTab <- eval.parent(ori[[2]])
+  
+  if(length(xax) > 1)
+    stop("Not implemented for multiple xax")
+  if(xax > evTab$nf)
+    stop("Non convenient xax")
+  
+  if(length(yax) > 1)
+    stop("Not implemented for multiple yax")
+  if(yax > evTab$nf)
+    stop("Non convenient yax") 
+  
+  adegtot <- adegpar()
+  position <- match.arg(posieig[1], choices = c("bottomleft", "bottomright", "topleft", "topright", "none"), several.ok = FALSE)
+  type <- match.arg(type)
+  
+  ## sort parameters for each graph
+  graphsnames <- c("light_row", "heavy_row", "light_col", "heavy_col", "eig")
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
+  
+  ## parameters management
+  adegtot <- adegpar()
+  params <- list()
+  params$light_row <- list(plabels = list(cex = 0), ppoints = list(col = "grey20", alpha = 0.45, cex = 1.2, pch = 19))
+  params$light_col <- list(plabels = list(cex = 0), ppoints = list(col = "grey20", alpha = 0.45, cex = 1.2, pch = 19))
+  
+  if(type == "label") {
+    params$heavy_row <- list(plabels = list(box = list(draw = FALSE), col = "red"), ppoints = list(cex = 0))
+    params$heavy_col <- list(plabels = list(box = list(draw = FALSE), col = "blue"), ppoints = list(cex = 0))
+  } else if(type == "cross") {
+    params$heavy_row <- list(ellipseSize = ellipseSize, plabels = list(box = list(draw = FALSE), col = "red"), ppoints = list(cex = 0), pellipses = list(lwd = 0, axes = list(col = "red", lty = 1)), plines = list(lwd = 0), plegend = list(drawKey = FALSE))
+    params$heavy_col <- list(ellipseSize = ellipseSize, plabels = list(box = list(draw = FALSE), col = "blue"), ppoints = list(cex = 0), pellipses = list(lwd = 0, axes = list(col = "blue", lty = 1)), plines = list(lwd = 0), plegend = list(drawKey = FALSE))
+  } else if(type == "ellipse") {
+    params$heavy_row <- list(ellipseSize = ellipseSize, plabels = list(box = list(draw = FALSE), col = "red"), ppoints = list(cex = 0), pellipses = list(border = "red", axes = list(lwd = 0)), plines = list(col = 0))
+    params$heavy_col <- list(ellipseSize = ellipseSize, plabels = list(box = list(draw = FALSE), col = "blue"), ppoints = list(cex = 0), pellipses = list(border = "blue", axes = list(lwd = 0)), plines = list(lwd = 0))
+  } else if(type == "both") {
+    params$heavy_row <- list(ellipseSize = 1.5, plabels = list(box = list(draw = FALSE), col = "red"), ppoints = list(cex = 0), pellipses = list(border = "red", axes = list(col = "red", lty = 1)), plines = list(lwd = 0))
+    params$heavy_col <- list(ellipseSize = 1.5, plabels = list(box = list(draw = FALSE), col = "blue"), ppoints = list(cex = 0), pellipses = list(border = "blue", axes = list(col = "blue", lty = 1)), plines = list(lwd = 0))
+  }
+  params$eig <- list(pbackground = list(box = TRUE), psub = list(text = "Eigenvalues"))
+  sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+
+  ## management of the data and the parameters about the rows' contribution (individuals) on axes
+  if(!is.null(x$row.abs)) {
+    inertrow <- x$row.abs[, c(xax, yax)] / 100
+    inertrowcall <- call("/", call("[", call("$", substitute(x), "row.abs"), call(":", 1, call("NROW", call("$", substitute(x), "row.abs"))), c(xax, yax)), 100)
+    light_row <- subset(evTab$li[, c(xax, yax)], inertrow[, 1] < cont & inertrow[, 2] < cont)
+    light_rowcall <- call("subset", call("[", call("$", ori[[2]], "li"), call(":", 1, call("NROW", call("$", ori[[2]], "li"))), c(xax, yax)), call("&", call("<", call("[", inertrowcall, 1), cont), call("<", call("[", inertrowcall, 2), cont)))
+    
+    heavy_row <- subset(evTab$li[, c(xax, yax)], inertrow[, 1] >= cont | inertrow[, 2] >= cont)
+    if(nrow(heavy_row) == 0)
+      stop("No points to draw, try lowering 'cont'")
+    heavy_inertrow <- subset(inertrow, inertrow[, 1] >= cont | inertrow[, 2] >= cont)
+    heavy_inertrowcum <- apply(heavy_inertrow, 1, sum)
+    
+    if(type == "label"){
+      if(is.null(sortparameters$heavy_row$plabels$cex)) {
+        sortparameters$heavy_row$plabels$cex <- heavy_inertrowcum / (max(heavy_inertrowcum) / 1.5)
+      } else {
+        sortparameters$heavy_row$plabels$cex <- sortparameters$heavy_row$plabels$cex * heavy_inertrowcum / (max(heavy_inertrowcum) / 1.5)
+      }
+    }
+    
+    lim.global <- setlimits2D(minX = min(c(heavy_row[, 1], light_row[, 1])), maxX = max(c(heavy_row[, 1], light_row[, 1])), 
+                              minY = min(c(heavy_row[, 2], light_row[, 2])), maxY = max(c(heavy_row[, 2], light_row[, 2])),
+                              origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+    
+    if(type != "label") {
+      # if ellipses or crosses are drawn, the limits are re-calculated and the elipses size are normalized
+      heavy_inertrowmax <- apply(heavy_inertrow, 2, max)
+      heavy_inertrownorm <- matrix(NA, NROW(heavy_inertrow), 2)
+      for (i in 1:2) {heavy_inertrownorm[, i] <- (heavy_inertrow[, i] / heavy_inertrowmax[i]) * (diff(lim.global[[i]]) / 10)}
+      
+      # TODO
+      # add 0.00001 to the coordinates to avoid the bug in the '.util.ellipse' function (waiting to correct it)
+      cont_row <- cbind(c(heavy_row[, 1] - heavy_inertrownorm[, 1]/2, heavy_row[, 1] + heavy_inertrownorm[, 1]/2, heavy_row[, 1], heavy_row[, 1] + 0.00001), 
+                        c(heavy_row[, 2] + 0.00001, heavy_row[, 2], heavy_row[, 2] - heavy_inertrownorm[, 2]/2, heavy_row[, 2] + heavy_inertrownorm[, 2]/2)) 
+      fac_row <- as.factor(rep(rownames(heavy_row), 4))
+      lim.global <- setlimits2D(minX = min(c(cont_row[, 1], light_row[, 1])), maxX = max(c(cont_row[, 1], light_row[, 1])), 
+                                minY = min(c(cont_row[, 2], light_row[, 2])), maxY = max(c(cont_row[, 2], light_row[, 2])),
+                                origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+    }
+    
+    params <- list()
+    params$light_row <- list(xlim = lim.global$xlim, ylim = lim.global$ylim)
+    sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+  }
+  
+  ## management of the data and the parameters about the columns' contribution (variables) on axes
+  if(!is.null(x$col.abs)) {
+    inertcol <- x$col.abs[, c(xax, yax)] / 100
+    inertcolcall <- call("/", call("[", call("$", substitute(x), "col.abs"), call(":", 1, call("NROW", call("$", substitute(x), "col.abs"))), c(xax, yax)), 100)
+    light_col <- subset(evTab$co[, c(xax, yax)], inertcol[, 1] < cont & inertcol[, 2] < cont)
+    light_colcall <- call("subset", call("[", call("$", ori[[2]], "co"), call(":", 1, call("NROW", call("$", ori[[2]], "co"))), c(xax, yax)), call("&", call("<", call("[", inertcolcall, 1), cont), call("<", call("[", inertcolcall, 2), cont)))
+    
+    heavy_col <- subset(evTab$co[, c(xax, yax)], inertcol[, 1] >= cont | inertcol[, 2] >= cont)
+    if(nrow(heavy_col) == 0)
+      stop("No points to draw, try lowering 'cont'")
+    heavy_inertcol <- subset(inertcol, inertcol[, 1] >= cont | inertcol[, 2] >= cont)
+    heavy_inertcolcum <- apply(heavy_inertcol, 1, sum)
+    
+    if(type == "label") {
+      if(is.null(sortparameters$heavy_col$plabels$cex)) {
+        sortparameters$heavy_col$plabels$cex <- heavy_inertcolcum / (max(heavy_inertcolcum) / 1.5)
+      } else {
+        sortparameters$heavy_col$plabels$cex <- sortparameters$heavy_col$plabels$cex * heavy_inertcolcum / (max(heavy_inertcolcum) / 1.5)
+      }
+    }
+    
+    lim.global <- setlimits2D(minX = min(c(heavy_col[, 1], light_col[, 1])), maxX = max(c(heavy_col[, 1], light_col[, 1])), 
+                              minY = min(c(heavy_col[, 2], light_col[, 2])), maxY = max(c(heavy_col[, 2], light_col[, 2])),
+                              origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+    
+    if(type != "label") {
+      # if ellipses or crosses are drawn, the limits are re-calculated and the elipse size are normalized
+      heavy_inertcolmax <- apply(heavy_inertcol, 2, max)
+      heavy_inertcolnorm <- matrix(NA, NROW(heavy_inertcol), 2)
+      for (i in 1:2) {heavy_inertcolnorm[, i] <- (heavy_inertcol[, i] / heavy_inertcolmax[i]) * (diff(lim.global[[i]]) / 10)}
+      
+      # TODO
+      # add 0.00001 to the coordinates to avoid the bug in the '.util.ellipse' function (waiting to correct it)
+      cont_col <- cbind(c(heavy_col[, 1] - heavy_inertcolnorm[, 1]/2, heavy_col[, 1] + heavy_inertcolnorm[, 1]/2, heavy_col[, 1], heavy_col[, 1] + 0.00001), 
+                        c(heavy_col[, 2] + 0.00001, heavy_col[, 2], heavy_col[, 2] - heavy_inertcolnorm[, 2]/2, heavy_col[, 2] + heavy_inertcolnorm[, 2]/2))  
+      fac_col <- as.factor(rep(rownames(heavy_col), 4))
+      lim.global <- setlimits2D(minX = min(c(cont_col[, 1], light_col[, 1])), maxX = max(c(cont_col[, 1], light_col[, 1])), 
+                                minY = min(c(cont_col[, 2], light_col[, 2])), maxY = max(c(cont_col[, 2], light_col[, 2])),
+                                origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+    }
+    
+    params <- list()
+    params$light_col <- list(xlim = lim.global$xlim, ylim = lim.global$ylim)
+    sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+  }
+  
+  
+  ## displaying of the eigen values
+  if(position != "none")
+    geig <- do.call("plotEig", c(list(eigvalue = call("$", ori[[2]], "eig"), nf = 1:evTab$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$eig))
+  
+  ## function to create the graphics about the row' contribution (individuals) on axes
+  f_row <- function(posi = "none", pos){
+    graphnames <- c("light_row", "heavy_row", if(posi != "none") {"eig"})
+    g1 <- do.call("s.label", c(list(dfxy = light_row, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$light_row))
+    if(type == "label")
+      g2 <- do.call("s.label", c(list(dfxy = heavy_row, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_row))
+    else
+      g2 <- do.call("s.class", c(list(dfxy = cont_row, fac = fac_row, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_row))
+    grow <- do.call("superpose", list(g1, g2))
+    grow@Call <- call("superpose", list(g1@Call, g2@Call))
+    if(posi != "none")
+      grow <- do.call("insert", list(geig, grow, posi = posi, plot = FALSE, ratio = 0.25))
+    names(grow) <- graphnames
+    return(grow)
+  }
+  
+  # function to create the graphics about the columns' contribution (variables) on axes
+  f_col <- function(posi = "none", pos) {
+    graphnames <- c("light_col", "heavy_col", if(posi != "none") {"eig"})
+    g3 <- do.call("s.label", c(list(dfxy = light_col, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$light_col))
+    if(type == "label")
+      g4 <- do.call("s.label", c(list(dfxy = heavy_col, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_col))
+    else
+      g4 <- do.call("s.class", c(list(dfxy = cont_col, fac = fac_col, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_col))
+    gcol <- do.call("superpose", list(g3, g4))
+    gcol@Call <- call("superpose", list(g3@Call, g4@Call))
+    if(posi != "none")
+      gcol <- do.call("insert", list(geig, gcol, posi = posi, plot = FALSE, ratio = 0.25))
+    names(gcol) <- graphnames
+    return(gcol)
+  }
+  
+  ## function to create a layout of the graphics about the contribution of rows (individuals) and columns (variables) on axes
+  f_both <- function(posi = "none", pos) {
+    object <- do.call("cbindADEg", c(list(f_row(posi = "none", pos = pos - 1), f_col(posi = posi, pos = pos - 1))))
+    names(object) <- c("row", "col")
+    return(object)
+  }
+  
+  ## creation of the appropriate plot according to the input data
+  if(!is.null(x$row.abs) & is.null(x$col.abs))
+    object <- f_row(posi = position, pos = pos)
+  if(!is.null(x$col.abs) & is.null(x$row.abs))
+    object <- f_col(posi = position, pos = pos)
+  if(!is.null(x$row.abs) & !is.null(x$col.abs))
+    object <- f_both(posi = position, pos = pos)
+  if(is.null(x$row.abs) & is.null(x$col.abs))
+    stop(paste("No inertia was calculated in the ", substitute(x), " object", sep = ""))
+  
+  object@Call <- match.call()
+  
   if(plot)
     print(object)
   invisible(object)

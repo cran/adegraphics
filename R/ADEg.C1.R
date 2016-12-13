@@ -37,7 +37,10 @@ setMethod(
             else
                 at <- eval(object@data$at, envir = sys.frame(object@data$frame))
         
-        score <- as.matrix(score)[, 1]  ## to manage 'score' when it is a data.frame with only one column
+        if(inherits(object, "C1.curves"))
+            score <- as.matrix(score)
+        else
+            score <- as.matrix(score)[, 1]  ## to manage 'score' when it is a data.frame with only one column
         
         if(class(object) == "C1.interval")  ## to manage only the first score in c(score1, score2)
             score <- score[1:(length(score) / 2)]
@@ -108,13 +111,6 @@ setMethod(
             if(is.null(object@g.args$xlim))
                 object@g.args$xlim <- lim
             
-            if(inherits(object, "C1.curve") | inherits(object, "C1.dotplot") | inherits(object, "C1.interval"))
-                if(!is.null(at))
-                    scalesandlab$y$at <- at
-            
-            if(is.null(scalesandlab$y$at))
-                scalesandlab$y$at <- 1:NROW(score)
-            
         } else {
             ## draw axes for vertical plot
             if(is.null(scalesandlab$y$at))
@@ -123,12 +119,6 @@ setMethod(
             if(is.null(object@g.args$ylim))
                 object@g.args$ylim <- lim
             
-            if(inherits(object, "C1.curve") | inherits(object, "C1.dotplot") | inherits(object, "C1.interval"))
-                if(!is.null(at))
-                    scalesandlab$x$at <- at
-            
-            if(is.null(scalesandlab$x$at))
-                scalesandlab$x$at <- 1:NROW(score)
         }
         
         object@g.args$scales <- scalesandlab
@@ -282,7 +272,10 @@ setMethod(
         else
             score <- eval(object@data$score, envir = sys.frame(object@data$frame))
         
-        score <- as.matrix(score)[, 1]  ## to manage 'score' when it is a data.frame with only one column
+        if(inherits(object, "C1.curves"))
+            score <- as.matrix(score)
+        else
+            score <- as.matrix(score)[, 1]  ## to manage 'score' when it is a data.frame with only one column
 
         xdata <- rep(1, length(score))
         if(inherits(object, "C1.barchart")) {
