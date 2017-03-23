@@ -277,7 +277,7 @@
   g1 <- do.call("s.arrow", c(list(dfxy = substitute(x$c1), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]]))
   g2 <- do.call("s.arrow", c(list(dfxy = substitute(x$co), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
   g3 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]])) 
-  g4 <- do.call("s.class", c(list(dfxy = substitute(x$ls), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
+  g4 <- do.call("s.class", c(list(dfxy = substitute(x$ls), wt = substitute(x$lw), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
   g5 <- do.call("s.corcircle", c(list(dfxy = substitute(x$as), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[5]]))
   g6 <- do.call("s.label", c(list(dfxy = substitute(x$li), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[6]]))
   
@@ -375,9 +375,9 @@
   g1 <- do.call("s.arrow", c(list(dfxy = substitute(x$c1), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]]))
   g2 <- do.call("s.arrow", c(list(dfxy = substitute(x$co), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
   g3 <- do.call("plotEig", c(list(eigvalue = substitute(x$eig), nf = 1:x$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
-  g4 <- do.call("s.class", c(list(dfxy = substitute(x$ls), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
+  g4 <- do.call("s.class", c(list(dfxy = substitute(x$ls), wt = substitute(x$lw), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
   g5 <- do.call("s.corcircle", c(list(dfxy = substitute(x$as), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[5]]))
-  g6 <- do.call("s.class", c(list(dfxy = substitute(x$li), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[6]]))
+  g6 <- do.call("s.class", c(list(dfxy = substitute(x$li), wt = substitute(x$lw), fac = appel$fac, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[6]]))
   
   ## ADEgS creation
   lay <- matrix(c(1, 2, 3, 4, 4, 5, 4, 4, 6), 3, 3)
@@ -1487,7 +1487,7 @@
                               origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
     
     if(type != "label") {
-      # if ellipses or crosses are drawn, the limits are re-calculated and the elipse size are normalized
+      # if ellipses or crosses are drawn, the limits are re-calculated and the ellipse size are normalized
       heavy_inertcolmax <- apply(heavy_inertcol, 2, max)
       heavy_inertcolnorm <- matrix(NA, NROW(heavy_inertcol), 2)
       for (i in 1:2) {heavy_inertcolnorm[, i] <- (heavy_inertcol[, i] / heavy_inertcolmax[i]) * (diff(lim.global[[i]]) / 10)}

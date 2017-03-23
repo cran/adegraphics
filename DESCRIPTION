@@ -2,8 +2,8 @@ Package: adegraphics
 Type: Package
 Title: An S4 Lattice-Based Package for the Representation of
         Multivariate Data
-Version: 1.0-6
-Date: 2016-12-13
+Version: 1.0-7
+Date: 2017-03-23
 Author: Stéphane Dray <stephane.dray@univ-lyon1.fr> and Aurélie Siberchicot <aurelie.siberchicot@univ-lyon1.fr>, with contributions from Jean Thioulouse. Based on earlier work by Alice Julien-Laferrière.
 Maintainer: Aurélie Siberchicot <aurelie.siberchicot@univ-lyon1.fr>
 Description: Graphical functionalities for the representation of multivariate data. It is a complete re-implementation of the functions available in the 'ade4' package.
@@ -29,6 +29,6 @@ BugReports: https://github.com/sdray/adegraphics/issues
 Encoding: UTF-8
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2016-12-13 16:26:49 UTC; aurelie
+Packaged: 2017-03-23 12:00:16 UTC; aurelie
 Repository: CRAN
-Date/Publication: 2016-12-13 19:53:07
+Date/Publication: 2017-03-23 13:10:01 UTC
