@@ -1,4 +1,4 @@
-5dae801e31b1040382f41997adc47a49 *DESCRIPTION
+58c4805f83e7213e190aa2100144cec9 *DESCRIPTION
 b4088c0e1885d7be5a5dd041292c145d *NAMESPACE
 d3c4e289da7442520091536ada6f8d9d *R/ADEg.C1.R
 f9398e5cc9c57c5c4b6835dde14f7bc5 *R/ADEg.R
@@ -40,7 +40,7 @@ ff06fe70abb0e3218aaaa904f4f2d487 *R/Tr.match.R
 212b2031be6b85efd371d270b56ea852 *R/Tr.traject.R
 826e3790fd381de7f09e6f57e4cda593 *R/addtext.R
 5c21e6a21545a45fbdbcea330b1d8c0d *R/ade4-kplot.R
-6906ac0d8c79be5be47cced9bde19bf7 *R/ade4-plot.R
+f6371078150b77ed42ce32212b0953b6 *R/ade4-plot.R
 15650c713cbfefb6b2e4b5cc9da6ccfe *R/ade4-scatter.R
 970d295db2936d608f06cbd2ece30b50 *R/adeGsenv.R
 746e00372f84ac545a79667e09908efa *R/genericMethod.R
@@ -56,7 +56,7 @@ bf8d58f56fec3d532e6611ee839eb1b6 *R/utilstriangle.R
 c265b4c9776c8e64764b62bb2923ab01 *build/vignette.rds
 04415e8f14da2aa15ba85a78303903da *inst/doc/adegraphics.R
 96835067ef72b58fc1e77ababd8a7422 *inst/doc/adegraphics.Rmd
-0d3b5bb95cafc38bda059ba699a771dd *inst/doc/adegraphics.html
+da237ca4e23bac7f83585e73ee655e08 *inst/doc/adegraphics.html
 5598610d87d39c76f4655ded0eb71939 *man/ADEg-class.Rd
 04d2d39bbab2e82a441b1dbb4f996e29 *man/ADEg.C1-class.Rd
 fe42debb511ab4a929b9029778b4fdac *man/ADEg.S1-class.Rd
@@ -106,7 +106,7 @@ dedf78380758f45ca0e207941931bf5d *man/adeg.panel.hist.Rd
 9c0d74adc122976f8d165cf94525a267 *man/adeg.panel.values.Rd
 616d9e555ee43859a71580ac9e9aa922 *man/adegpar.Rd
 b236f2fcf939e84c32c2f12947a6d646 *man/adegraphics-internal.Rd
-40b467540d3aaa17a6fb551dd13234ec *man/adegraphics-package.Rd
+8c35327e00047b6538b22b5903e6a321 *man/adegraphics-package.Rd
 4583b908e3dba3541a6aead9d4847a8d *man/cbindADEg.Rd
 3ff9c210f3c3ff6f1fb07a0824bf8359 *man/changelatticetheme.Rd
 3685372b4e0b9847d9cc4c002d245eb4 *man/getcall-methods.Rd
@@ -124,7 +124,7 @@ b297ce96aa3a1535f151bbe5c9ad85fa *man/s.Spatial.Rd
 4f4b13b10306a004ee688befecb9fe46 *man/s.distri.Rd
 f4b7815ef4bcff9c5e014b2e2177e69f *man/s.image.Rd
 3bdcb6cb1b937b09c9a5e6ec183b90a1 *man/s.label.Rd
-f7b6296c463e32fe39e277d1a40429ab *man/s.logo.Rd
+835971ca2fcd623bfca4cb020cd7fc4f *man/s.logo.Rd
 7b61953336ea5ce084586e689eb9bce3 *man/s.match.Rd
 d27b943fe8bae0ce295e5fd72587dffc *man/s.traject.Rd
 de5a2b09ca7820b23ce4fdc372600217 *man/s.value.Rd
