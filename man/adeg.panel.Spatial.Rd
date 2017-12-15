@@ -67,17 +67,16 @@ adeg.panel.Spatial(SpObject, sp.layout = NULL, col = 1, border = 1, lwd = 1,
 
 \examples{
 
-if(require(maptools, quietly = TRUE) & require(lattice, quietly = TRUE)) {
+if(require(lattice, quietly = TRUE) & require(sp, quietly = TRUE)) {
+data(elec88, package = "ade4")
 
-nc <- readShapePoly(system.file("shapes/sids.shp", package = "maptools")[1], 
-  proj4string = CRS("+proj=longlat +datum=NAD27"))
-xy <- coordinates(nc)
-arrow <- list("SpatialPolygonsRescale", layout.north.arrow(), 
-  offset = c(-76, 34.2), scale = 0.5)
+xy <- elec88$xy
+arrow <- list("SpatialPolygonsRescale", offset = c(150000,1700000),
+layout.north.arrow(), scale = 100000)
 
 xyplot(xy[, 2] ~ xy[, 1], aspect = "iso", panel = function(...){
-  adeg.panel.Spatial(SpObject = nc, sp.layout = list(arrow), 
-  col = colorRampPalette(c("yellow", "blue"))(52), border =
+  adeg.panel.Spatial(SpObject = elec88$Spatial, sp.layout = list(arrow), 
+  col = colorRampPalette(c("yellow", "blue"))(5), border =
   "transparent")})
 }
 }

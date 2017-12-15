@@ -6,9 +6,9 @@ setClass(
   Class = "ADEg.S1",
   contains = c("ADEg", "VIRTUAL"),
   slots = c(data = "list")
-  )
+)
 
-  
+
 setMethod(
   f = "initialize",
   signature = "ADEg.S1",
@@ -51,15 +51,15 @@ setMethod(
       minX <- object@g.args$xlim[1]
       maxX <- object@g.args$xlim[2]
     }
-
+    
     if(!object@adeg.par$p1d$horizontal & !is.null(object@g.args$ylim) & is.null(object@s.misc$hori.update)) {
       minX <- object@g.args$ylim[1]
       maxX <- object@g.args$ylim[2]
     }
-
+    
     origin <- object@adeg.par$porigin
     lim <- setlimits1D(minX, maxX, origin = origin$origin[1], includeOr = origin$include)
-
+    
     ## compute grid size
     tmp <- pretty(lim, n = object@adeg.par$pgrid$nint)
     if(!origin$include)
@@ -68,7 +68,7 @@ setMethod(
     cgrid <- diff(tmp)[1]
     if(is.na(cgrid))
       stop("error while calculating grid")
-
+    
     ## compute grid location
     v0 <- origin$origin[1]
     if((origin$origin[1] + cgrid) <= lim[2])
@@ -76,15 +76,16 @@ setMethod(
     if((origin$origin[1] - cgrid >= lim[1]))
       v0 <- c(v0, seq(origin$origin[1] - cgrid, lim[1], by = -cgrid))
     v0 <- sort(v0[v0 >= lim[1] & v0 <= lim[2]])
-
+    
     ## clean near-zero values
     delta <- diff(range(v0))/object@adeg.par$pgrid$nint
     if (any(small <- abs(v0) < 1e-14 * delta)) 
-        v0[small] <- 0
+      v0[small] <- 0
     
     object@s.misc$backgrid <- list(x = v0, d = cgrid)
     
     ## object@adeg.par$paxes has priority over object@g.args$scales
+    object@adeg.par$paxes$aspectratio <- "fill"
     scalesandlab <- modifyList(as.list(object@g.args$scales), object@adeg.par$paxes, keep.null = TRUE)
     
     if(!scalesandlab$draw) {
@@ -102,18 +103,32 @@ setMethod(
       if(is.null(object@g.args$xlim) || !identical(object@s.misc$hori.update, object@adeg.par$p1d$horizontal))
         object@g.args$xlim <- lim
       
-      if(is.null(object@g.args$ylim))
-        object@g.args$ylim <- setlimits1D(min(at), max(at), 0, FALSE)
-      if(inherits(object, "S1.boxplot")) ## extend ylim for boxes
-        object@g.args$ylim <- object@g.args$ylim + c(-1, 1) * abs(diff(range(at))) / (nlevels(fac) + 1)
+      Ylim <- object@g.args$ylim
       
-      ref <- ifelse(object@adeg.par$p1d$reverse, 2, 1)
-      margin <- object@g.args$ylim[ref]
-      if(object@adeg.par$p1d$rug$draw)
-        margin <- object@adeg.par$p1d$rug$margin * abs(diff(object@g.args$ylim))
-      object@s.misc$rug <- object@g.args$ylim[ref]
-      object@g.args$ylim[ref] <- object@g.args$ylim[ref] + lead * margin
+      if(is.null(object@s.misc$p1dReverse.update) || object@adeg.par$p1d$reverse != object@s.misc$p1dReverse.update ||
+         is.null(object@s.misc$Ylim.update) || Ylim != object@s.misc$Ylim.update) {
         
+        if(is.null(object@g.args$ylim))
+          Ylim <- setlimits1D(min(at), max(at), 0, FALSE)
+        if(inherits(object, "S1.boxplot")) ## extend ylim for boxes
+          Ylim <- Ylim + c(-1, 1) * abs(diff(range(at))) / (nlevels(fac) + 1)
+        
+        if(object@adeg.par$p1d$rug$draw) {
+          ref <- ifelse(object@adeg.par$p1d$reverse, 2, 1)
+          margin <- Ylim[ref]
+          if(object@adeg.par$p1d$rug$draw)
+            margin <- object@adeg.par$p1d$rug$margin * abs(diff(Ylim))
+          
+          object@s.misc$rug <- Ylim[ref]
+          Ylim[ref] <- Ylim[ref] + lead * margin
+        }
+        
+        object@s.misc$Ylim.update <- Ylim
+        object@s.misc$p1dReverse.update <- object@adeg.par$p1d$reverse
+      }
+      
+      object@g.args$ylim <- Ylim
+      
     } else {
       ## draw axes for vertical plot
       if(is.null(scalesandlab$y$at))
@@ -122,17 +137,31 @@ setMethod(
       if(is.null(object@g.args$ylim) || !identical(object@s.misc$hori.update, object@adeg.par$p1d$horizontal))
         object@g.args$ylim <- lim
       
-      if(is.null(object@g.args$xlim))
-        object@g.args$xlim <- setlimits1D(min(at), max(at), 0, FALSE)
-      if(inherits(object, "S1.boxplot")) ## extend xlim for boxes
-        object@g.args$xlim <- object@g.args$xlim + c(-1, 1) * abs(diff(range(at))) / (nlevels(fac) + 1)
+      Xlim <- object@g.args$xlim
       
-      ref <- ifelse(object@adeg.par$p1d$reverse, 2, 1)
-      margin <- object@g.args$xlim[ref]
-      if(object@adeg.par$p1d$rug$draw)
-        margin <- object@adeg.par$p1d$rug$margin * abs(diff(object@g.args$xlim))
-      object@s.misc$rug <- object@g.args$xlim[ref]
-      object@g.args$xlim[ref] <-  object@g.args$xlim[ref] + lead * margin
+      if(is.null(object@s.misc$p1dReverse.update) || object@adeg.par$p1d$reverse != object@s.misc$p1dReverse.update ||
+         is.null(object@s.misc$Xlim.update) || Xlim != object@s.misc$Xlim.update) {
+        
+        if(is.null(object@g.args$xlim))
+          Xlim <- setlimits1D(min(at), max(at), 0, FALSE)
+        if(inherits(object, "S1.boxplot")) ## extend xlim for boxes
+          Xlim <- Xlim + c(-1, 1) * abs(diff(range(at))) / (nlevels(fac) + 1)
+        
+        if(object@adeg.par$p1d$rug$draw) {
+          ref <- ifelse(object@adeg.par$p1d$reverse, 2, 1)
+          margin <- Xlim[ref]
+          if(object@adeg.par$p1d$rug$draw)
+            margin <- object@adeg.par$p1d$rug$margin * abs(diff(Xlim))
+          
+          object@s.misc$rug <- Xlim[ref]
+          Xlim[ref] <- Xlim[ref] + lead * margin
+        }
+        
+        object@s.misc$Xlim.update <- Xlim
+        object@s.misc$p1dReverse.update <- object@adeg.par$p1d$reverse
+      }
+      
+      object@g.args$xlim <- Xlim
     }
     
     object@g.args$scales <- scalesandlab
@@ -153,7 +182,7 @@ setMethod(
     porigin <- object@adeg.par$porigin 
     pscore <- object@adeg.par$p1d
     lims <- current.panel.limits(unit = "native")
-
+    
     plines <- object@adeg.par$plines
     if(!is.null(object@data$fac)) {
       ## there is a factor in the data (e.g., S1.class)
@@ -169,12 +198,6 @@ setMethod(
     if(pscore$horizontal) {
       ## horizontal plot
       
-      ## set margins to get some place for rug
-      ref <- ifelse(pscore$reverse, object@g.args$ylim[2], object@g.args$ylim[1])
-      margin <- ref
-      if(pscore$rug$draw)
-        margin <- ifelse(is.unit(pscore$rug$margin), convertUnit(pscore$rug$margin, typeFrom = "dimension", unitTo = "native", axisFrom = "y", valueOnly = TRUE), pscore$rug$margin)
-            
       ## draw grid
       if(grid$draw)
         panel.segments(x0 = object@s.misc$backgrid$x , x1 = object@s.misc$backgrid$x, y0 = lims$ylim[1], y1 = lims$ylim[2], col = grid$col, lty = grid$lty, lwd = grid$lwd)
@@ -187,10 +210,10 @@ setMethod(
       
       ## draw rug
       if(pscore$rug$draw & (pscore$rug$tck != 0)) {
+        ref <- ifelse(pscore$reverse, lims$ylim[2], lims$ylim[1])
         ## tick end and starting points
         start <- object@s.misc$rug
         end <- start - pscore$rug$tck * lead * abs(start - ref)
-        ## 'panel.rug' needs 'npc' values 
         start <- convertUnit(unit(start, "native"), unitTo = "npc", axisFrom = "y", valueOnly = TRUE)
         end <- convertUnit(unit(end, "native"), unitTo = "npc", axisFrom = "y", valueOnly = TRUE)
         do.call("panel.rug", c(list(x = y, start = start, end = end), plines))
@@ -198,24 +221,19 @@ setMethod(
     } else {
       ## vertical plot
       
-      ## set margins to get some place for rug
-      ref <- ifelse(pscore$reverse, object@g.args$xlim[2], object@g.args$xlim[1])
-      margin <- ref
-      if(pscore$rug$draw)          
-        margin <- ifelse(is.unit(pscore$rug$margin), convertUnit(pscore$rug$margin, typeFrom = "dimension", unitTo = "native", axisFrom = "x", valueOnly = TRUE), pscore$rug$margin)
-      
       ## draw grid
       if(grid$draw)
         panel.segments(y0 = object@s.misc$backgrid$x , y1 = object@s.misc$backgrid$x, x0 = lims$xlim[1], x1 = lims$xlim[2], col = grid$col, lty = grid$lty, lwd = grid$lwd)
-
+      
       ## draw origin
       panel.abline(
         h = if(porigin$draw) porigin$origin else NULL,
         v = if(pscore$rug$draw & pscore$rug$line) object@s.misc$rug else NULL,
         col = porigin$col, lwd = porigin$lwd, lty = porigin$lty, alpha = porigin$alpha)
-
+      
       ## draw rug
       if(pscore$rug$draw && (pscore$rug$tck != 0)) {
+        ref <- ifelse(pscore$reverse, lims$xlim[2], lims$xlim[1])
         ## tick end and starting points
         start <- object@s.misc$rug
         end <- start - pscore$rug$tck * lead * abs(start - ref)
@@ -224,7 +242,7 @@ setMethod(
         do.call("panel.rug", c(list(y = y, start = start, end = end), plines))
       }
     }
-
+    
     ## indicate grid size (d = **)
     if(grid$draw & (grid$text$cex > 0)) { 
       text.pos <- .setposition(grid$text$pos)
@@ -251,18 +269,19 @@ setMethod(
       object@trellis.par$axis.line$col <- "black"
     
     arguments <- list(
-                   par.settings = object@trellis.par,
-                   scales = object@g.args$scales,
-                   key = createkey(object),                   
-                   axis = axis.L, ## see utils.R
-                   panel = function(...) {
-                     panelbase(object,...) ## grid,
-                     panel(object,...) ## call to S1.panel function, for slabel and ADEg.S1 class of graphs
-                   })
+      par.settings = object@trellis.par,
+      scales = object@g.args$scales,
+      aspect = object@adeg.par$paxes$aspectratio,
+      key = createkey(object),                   
+      axis = axis.L, ## see utils.R
+      panel = function(...) {
+        panelbase(object,...) ## grid,
+        panel(object,...) ## call to S1.panel function, for slabel and ADEg.S1 class of graphs
+      })
     
     object@lattice.call$arguments <- arguments
     object@lattice.call$graphictype <- "xyplot" 
-
+    
     ## get lattice arguments (set unspecified to NULL)
     argnames <- c("main", "sub", "xlab", "ylab")
     largs <- object@g.args[argnames]
@@ -275,7 +294,7 @@ setMethod(
     
     object@lattice.call$arguments <- c(object@lattice.call$arguments, largs, list(strip = FALSE))
     assign(name_obj, object, envir = parent.frame())
-})
+  })
 
 
 setMethod(
@@ -355,7 +374,7 @@ setMethod(
       v0 <- c(v0, seq(origin$origin[1] - cgrid, lim[1], by = -cgrid))
     v0 <- sort(v0[v0 >= lim[1] & v0 <= lim[2]])
     object@s.misc$backgrid <- list(x = v0, d = cgrid)
-
+    
     setlatticecall(object)
     print(object)
     invisible()   

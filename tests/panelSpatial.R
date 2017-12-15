@@ -1,17 +1,18 @@
+library(ade4)
 library(adegraphics)
-library(maptools)
+library(sp)
 pdf("panelSpatial.pdf")
 
 ## ex1
-nc <- readShapePoly(system.file("shapes/sids.shp", package = "maptools")[1], proj4string = CRS("+proj=longlat +datum=NAD27"))
-dfxy1 <- coordinates(nc)
-g1 <- s.label(dfxy1, Sp = nc, pSp.col = colorRampPalette(c("yellow", "blue"))(52), pgrid.draw = FALSE, plabels.cex = 0)
+data(mafragh, package = "ade4")
+dfxy1 <- coordinates(mafragh$Spatial)
+g1 <- s.label(dfxy1, Sp = mafragh$Spatial, pSp.col = colorRampPalette(c("yellow", "blue"))(97), pgrid.draw = FALSE, plabels.cex = 0)
 
 
 ## ex2
 data(meuse, package = "sp")
 coordinates(meuse) <- ~ x + y
-data(meuse.grid)
+data(meuse.grid, package = "sp")
 m <- SpatialPixelsDataFrame(points = meuse.grid[c("x", "y")], data = meuse.grid)
 data(meuse.riv)
 meuse.sr <- SpatialPolygons(list(Polygons(list(Polygon(meuse.riv)), "meuse.riv")))
@@ -49,14 +50,15 @@ g4 <- s.class(dfxy4, region.names, ellip = 0, star = 0, col = col.region, Sp = g
 ## ex4
 library(sp)
 library(lattice)
-nc <- readShapePoly(system.file("shapes/sids.shp", package = "maptools")[1], proj4string = CRS("+proj=longlat +datum=NAD27"))
 
-sp <- SpatialPolygons(nc@polygons, nc@plotOrder)
+data(elec88, package = "ade4")
+sp <- elec88$Spatial
+
 g5 <- xyplot(1 ~ 1, xlim = bbox(sp)[1, ], ylim = bbox(sp)[2, ], panel = function(...) {adeg.panel.Spatial(SpObject = sp, col = "black", border = "black")})
-g6 <- xyplot(1 ~ 1, xlim = bbox(sp)[1, ], ylim = bbox(sp)[2, ], panel = function(...) {adeg.panel.Spatial(nc, col = 1:14, border = "black")})
-g7 <- xyplot(1 ~ 1, xlim = bbox(sp)[1, ], ylim = bbox(sp)[2, ], aspect = "iso", panel = function(...) {sp.polygons(nc, col = "black", fill = 1:5)})
+g6 <- xyplot(1 ~ 1, xlim = bbox(sp)[1, ], ylim = bbox(sp)[2, ], panel = function(...) {adeg.panel.Spatial(sp, col = 1:14, border = "black")})
+g7 <- xyplot(1 ~ 1, xlim = bbox(sp)[1, ], ylim = bbox(sp)[2, ], aspect = "iso", panel = function(...) {sp.polygons(sp, col = "black", fill = 1:5)})
 g8 <- xyplot(1 ~ 1, xlim = bbox(sp)[1, ], ylim = bbox(sp)[2, ], panel = function(...) {adeg.panel.Spatial(SpObject = sp, col = "black", border = "blue")})
-g9 <- xyplot(1 ~ 1, xlim = bbox(sp)[1, ], ylim = bbox(sp)[2, ], panel = function(...) {adeg.panel.Spatial(SpObject = nc, col = "black", border = "blue")})
+g9 <- xyplot(1 ~ 1, xlim = bbox(sp)[1, ], ylim = bbox(sp)[2, ], panel = function(...) {adeg.panel.Spatial(SpObject = sp, col = "black", border = "blue")})
 #g10 <- s.label(cbind(-80, 35), Sp = nc)
 #g11 <- s.label(cbind(-80, 35), Sp = sp)
 

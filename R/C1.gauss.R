@@ -50,11 +50,14 @@ setMethod(
         object@g.args$ylab <- "density"
     }
     
-    if(is.logical(object@g.args$col)) {
-      if(object@g.args$col)
-        adegtot$plabels$col <- adegtot$plabels$boxes$col <- adegtot$plines$col <- adegtot$ppolygons$col <- adegtot$ppolygons$border <- adegtot$ppalette$quali(nlev) 
-    } else
-      adegtot$plabels$col <- adegtot$plabels$boxes$col <- adegtot$plines$col <- adegtot$ppolygons$col <- adegtot$ppolygons$border <- rep(object@g.args$col, length.out = nlev)
+    ## setting colors
+    paramsToColor <- list(plabels = list(col = object@adeg.par$plabels$col, boxes = list(col = object@adeg.par$plabels$boxes$col)),
+                          plines = list(col = object@adeg.par$plines$col),
+                          ppolygons = list(border = object@adeg.par$ppolygons$border, col = object@adeg.par$ppolygons$col))
+    
+    if(!(is.null(object@g.args$col) || (is.logical(object@g.args$col) && !object@g.args$col)))
+      adegtot <- modifyList(adegtot, col2adepar(ccol = object@g.args$col, pparamsToColor = paramsToColor, nnlev = nlev))
+    
     
     ## if fill is FALSE, polygons density curves are transparent
     if(!object@g.args$fill)
@@ -87,26 +90,58 @@ setMethod(
     
     lead <- ifelse(object@adeg.par$p1d$reverse, 1 , -1)
     
-    if(object@adeg.par$p1d$horizontal && is.null(object@g.args$ylim))
-      object@g.args$ylim <- c(0, max(sapply(gausscurv, FUN = function(x) {ifelse(is.na(x[1]), 0, max(x)) / 0.85})))
     if(object@adeg.par$p1d$horizontal) {
-    	ref <- ifelse(object@adeg.par$p1d$reverse, 2, 1)
-      margin <- object@g.args$ylim[ref]
-      if(object@adeg.par$p1d$rug$draw)
-        margin <- object@adeg.par$p1d$rug$margin * abs(diff(object@g.args$ylim))
-      object@s.misc$rug <- object@g.args$ylim[ref]
-      object@g.args$ylim[ref] <- object@g.args$ylim[ref] + lead * margin
-    }
-    
-    if(!object@adeg.par$p1d$horizontal && is.null(object@g.args$xlim))
-      object@g.args$xlim <- c(0, max(sapply(gausscurv, FUN = function(x) {ifelse(is.na(x[1]), 0, max(x)) / 0.85})))
-    if(!object@adeg.par$p1d$horizontal) {
-      ref <- ifelse(object@adeg.par$p1d$reverse, 2, 1)
-      margin <- object@g.args$xlim[ref]
-      if(object@adeg.par$p1d$rug$draw)
-        margin <- object@adeg.par$p1d$rug$margin * abs(diff(object@g.args$xlim))
-      object@s.misc$rug <- object@g.args$xlim[ref]
-      object@g.args$xlim[ref] <- object@g.args$xlim[ref] + lead * margin
+      
+      Ylim <- object@g.args$ylim
+      
+      if(is.null(object@s.misc$p1dReverse.update) || object@adeg.par$p1d$reverse != object@s.misc$p1dReverse.update ||
+         is.null(object@s.misc$Ylim.update) || Ylim != object@s.misc$Ylim.update) {
+        
+        if(is.null(object@g.args$ylim))
+          Ylim <- c(0, max(sapply(gausscurv, FUN = function(x) {ifelse(is.na(x[1]), 0, max(x)) / 0.85})))
+        
+        if(object@adeg.par$p1d$rug$draw) {
+          ref <- ifelse(object@adeg.par$p1d$reverse, 2, 1)
+          margin <- Ylim[ref]
+          if(object@adeg.par$p1d$rug$draw)
+            margin <- object@adeg.par$p1d$rug$margin * abs(diff(Ylim))
+          
+          object@s.misc$rug <- Ylim[ref]
+          Ylim[ref] <- Ylim[ref] + lead * margin
+        }
+        
+        object@s.misc$Ylim.update <- Ylim
+      }
+      
+      object@g.args$ylim <- Ylim
+      object@s.misc$p1dReverse.update <- object@adeg.par$p1d$reverse
+      
+    } else {
+      
+      Xlim <- object@g.args$xlim
+      
+      if(is.null(object@s.misc$p1dReverse.update) || object@adeg.par$p1d$reverse != object@s.misc$p1dReverse.update ||
+         is.null(object@s.misc$Xlim.update) || Xlim != object@s.misc$Xlim.update) {
+        
+        if(is.null(object@g.args$xlim))
+          Xlim <- c(0, max(sapply(gausscurv, FUN = function(x) {ifelse(is.na(x[1]), 0, max(x)) / 0.85})))
+        
+        if(object@adeg.par$p1d$rug$draw) {
+          ref <- ifelse(object@adeg.par$p1d$reverse, 2, 1)
+          margin <- Xlim[ref]
+          if(object@adeg.par$p1d$rug$draw)
+            margin <- object@adeg.par$p1d$rug$margin * abs(diff(Xlim))
+          
+          object@s.misc$rug <- Xlim[ref]
+          Xlim[ref] <- Xlim[ref] + lead * margin
+        }
+        
+        object@s.misc$Xlim.update <- Xlim
+        object@s.misc$p1dReverse.update <- object@adeg.par$p1d$reverse
+      }
+      
+      object@g.args$xlim <- Xlim
+      
     }
     
     object@stats$gausscurves <- gausscurv
@@ -153,11 +188,11 @@ setMethod(
     lead <- ifelse(pscore$reverse, -1, 1)   
     if(pscore$horizontal) {
       ## horizontal drawing
-      margin <- 0
+      margin <- ifelse(pscore$reverse, lims$ylim[2], lims$ylim[1])
       xx <- seq(from = lims$xlim[1], to = lims$xlim[2], length.out = object@g.args$steps)
       if(pscore$rug$draw)
-        margin <- if(is.unit(pscore$rug$margin)) convertUnit(pscore$rug$margin, typeFrom = "dimension", unitTo = "native", axisFrom = "y", valueOnly = TRUE) else pscore$rug$margin
-      margin <- ifelse(pscore$reverse, lims$ylim[2], lims$ylim[1]) + lead * margin
+        margin <- if(is.unit(object@s.misc$rug)) convertUnit(object@s.misc$rug, typeFrom = "dimension", unitTo = "native", axisFrom = "y", valueOnly = TRUE) else object@s.misc$rug
+      # margin <- ifelse(pscore$reverse, lims$ylim[2], lims$ylim[1]) + lead * margin
        
       for(i in 1:nlev) {
         if(!is.na(curvess[[i]][1])) {
@@ -174,11 +209,12 @@ setMethod(
       }
     } else {
       ## vertical drawing
-      margin <- 0
+      margin <- ifelse(pscore$reverse, lims$xlim[2], lims$xlim[1])
       yy <- seq(from = lims$ylim[1], to = lims$ylim[2], length.out = object@g.args$steps)
       if(pscore$rug$draw)
-        margin <- if(is.unit(pscore$rug$margin)) convertUnit(pscore$rug$margin, typeFrom = "dimension", unitTo = "native", axisFrom = "x", valueOnly = TRUE) else pscore$rug$margin
-      margin <- ifelse(pscore$reverse, lims$xlim[2], lims$xlim[1]) + lead * margin
+        margin <- if(is.unit(object@s.misc$rug)) convertUnit(object@s.misc$rug, typeFrom = "dimension", unitTo = "native", axisFrom = "x", valueOnly = TRUE) else object@s.misc$rug
+      # margin <- ifelse(pscore$reverse, lims$xlim[2], lims$xlim[1]) + lead * margin
+      
       for(i in 1:nlev) {
         if(!is.na(curvess[[i]][1])) {
           x <- margin + lead * curvess[[i]]
@@ -195,7 +231,7 @@ setMethod(
   })
 
 
-s1d.gauss <- function(score, fac = gl(1, NROW(score)), wt = rep(1, NROW(score)), steps = 200, col = TRUE, fill = TRUE, facets = NULL,
+s1d.gauss <- function(score, fac = gl(1, NROW(score)), wt = rep(1, NROW(score)), steps = 200, col = NULL, fill = TRUE, facets = NULL,
                       plot = TRUE, storeData = TRUE, add = FALSE, pos = -1, ...) {
                       
   thecall <- .expand.call(match.call())

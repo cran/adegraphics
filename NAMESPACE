@@ -57,6 +57,7 @@ S3method("scatter", "dudi")
 S3method("scatter", "nipals")
 S3method("scatter", "pco")
 S3method("score", "acm")
+S3method("score", "inertia")
 S3method("score", "mix")
 S3method("score", "pca")
 S3method("screeplot", "dudi")
@@ -133,6 +134,9 @@ exportMethods(
   "rbindADEg",
   "add.ADEg",
   "addhist",
+  "addline",
+  "addpoint",
+  "addsegment",
   "addtext",
   "getcall",
   "getgraphics",

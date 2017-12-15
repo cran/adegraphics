@@ -4,10 +4,10 @@
 
 setClass(
   Class = "S2.class",
-  contains = "ADEg.S2",
+  contains = "ADEg.S2"
 )
 
-  
+
 setMethod(
   f = "initialize",
   signature = "S2.class",
@@ -42,45 +42,22 @@ setMethod(
       wt <- eval(object@data$wt, envir = sys.frame(object@data$frame))
     }
     
+    ## change default for some parameters
     if(is.null(object@adeg.par$porigin$include) & (any(names(object@g.args) %in% c("Sp", "nbobject"))))
       adegtot$porigin$include <- FALSE
-
+    
     if(any(adegtot$plabels$cex > 0) & is.null(object@adeg.par$plegend$drawKey)) ## if labels, no legend
-        adegtot$plegend$drawKey <- FALSE
-    ## setting colors 
-    if(!is.null(object@g.args$col)){
-        col.idx <- FALSE
-        if(is.logical(object@g.args$col)) {
-            if(object@g.args$col){
-                colT <- adegtot$ppalette$quali(nlevels(fac))
-                col.idx <- TRUE
-            }
-        } else {
-            colT <- rep(object@g.args$col, length.out = nlevels(fac))
-            col.idx <- TRUE
-        }
-        
-        if(col.idx){
-            if(is.null(object@adeg.par$ppoints$col))
-                adegtot$ppoints$col <- colT
-            if(is.null(object@adeg.par$ppoints$fill))
-                adegtot$ppoints$fill <- colT
-            if(is.null(object@adeg.par$pellipses$border))
-                adegtot$pellipses$border <- colT
-            if(is.null(object@adeg.par$pellipses$col))
-                adegtot$pellipses$col <- colT
-            if(is.null(object@adeg.par$plabels$col))
-                adegtot$plabels$col <- colT
-            if(is.null(object@adeg.par$plabels$boxes$border))
-                adegtot$plabels$boxes$border <- colT
-            if(is.null(object@adeg.par$ppolygons$border))
-                adegtot$ppolygons$border <- colT
-            if(is.null(object@adeg.par$ppolygons$col))
-                adegtot$ppolygons$col <- colT
-            if(is.null(object@adeg.par$plines$col))
-                adegtot$plines$col <- colT
-        }
-    }
+      adegtot$plegend$drawKey <- FALSE
+    
+    ## setting colors
+    paramsToColor <- list(ppoints = list(col = object@adeg.par$ppoints$col, fill = object@adeg.par$ppoints$fill),
+                          plabels = list(col = object@adeg.par$plabels$col, boxes = list(border = object@adeg.par$plabels$boxes$border)),
+                          plines = list(col = object@adeg.par$plines$col),
+                          pellipses = list(border = object@adeg.par$pellipses$border, col = object@adeg.par$pellipses$col),
+                          ppolygons = list(border = object@adeg.par$ppolygons$border, col = object@adeg.par$ppolygons$col))
+    
+    if(!(is.null(object@g.args$col) || (is.logical(object@g.args$col) && !object@g.args$col)))
+      adegtot <- modifyList(adegtot, col2adepar(ccol = object@g.args$col, pparamsToColor = paramsToColor, nnlev = nlevels(fac)))
     
     ## preliminary computations
     object@stats$means <- matrix(meanfacwt(dfxy[, c(object@data$xax, object@data$yax)], fac, wt), nrow = nlevels(fac))
@@ -107,6 +84,7 @@ setMethod(
     
     ## never optimized labels for s.class
     object@adeg.par$plabels$optim <- FALSE
+    
     assign(name_obj, object, envir = parent.frame())
   })
 
@@ -211,9 +189,9 @@ setMethod(
     }
   })
 
-  
+
 s.class <- function(dfxy, fac, xax = 1, yax = 2, wt = rep(1, NROW(fac)), labels = levels(fac), ellipseSize = 1.5, starSize = 1, 
-  									chullSize = NULL, col = NULL, facets = NULL, plot = TRUE, storeData = TRUE, add = FALSE, pos = -1, ...) {
+                    chullSize = NULL, col = NULL, facets = NULL, plot = TRUE, storeData = TRUE, add = FALSE, pos = -1, ...) {
   
   ## evaluation of some parameters (required for multiplot)
   thecall <- .expand.call(match.call())
@@ -258,16 +236,16 @@ s.class <- function(dfxy, fac, xax = 1, yax = 2, wt = rep(1, NROW(fac)), labels 
   ## simple ADEg graphic
   else {
     if(length(sortparameters$rest))
-  	  warning(c("Unused parameters: ", paste(unique(names(sortparameters$rest)), " ", sep = "")), call. = FALSE)
+      warning(c("Unused parameters: ", paste(unique(names(sortparameters$rest)), " ", sep = "")), call. = FALSE)
     
     ## creation of the ADEg object
     g.args <- c(sortparameters$g.args, list(ellipseSize = ellipseSize, starSize = starSize, chullSize = chullSize, col = col))
     if(storeData)
-    	tmp_data <- list(dfxy = dfxy, fac = fac, xax = xax, yax = yax, wt = wt, labels = labels, frame = sys.nframe() + pos, storeData = storeData)
+      tmp_data <- list(dfxy = dfxy, fac = fac, xax = xax, yax = yax, wt = wt, labels = labels, frame = sys.nframe() + pos, storeData = storeData)
     else
       tmp_data <- list(dfxy = thecall$dfxy, fac = thecall$fac, xax = xax, yax = yax, wt = thecall$wt, labels = thecall$labels, frame = sys.nframe() + pos, storeData = storeData)
     object <- new(Class = "S2.class", data = tmp_data, adeg.par = sortparameters$adepar, trellis.par = sortparameters$trellis, g.args = g.args, Call = as.call(thecall))
-
+    
     ## preparation of the graph
     prepare(object)
     setlatticecall(object)

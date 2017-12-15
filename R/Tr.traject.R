@@ -38,14 +38,13 @@ setMethod(
     on.exit(adegpar(oldparamadeg))
     adegtot <- adegpar(object@adeg.par)
     
-    ## change default for some parameters
-    if(!is.null(object@g.args$col))
-      if(is.logical(object@g.args$col)) {
-        if(object@g.args$col)
-          adegtot$ppoints$col <- adegtot$ppoints$fill <- adegtot$plabels$col <- adegtot$plabels$boxes$border <- adegtot$plines$col <- adegtot$ppalette$quali(nlevels(fac))
-      }  
-      else
-        adegtot$ppoints$col <- adegtot$ppoints$fill <- adegtot$plabels$col <- adegtot$plabels$boxes$border <- adegtot$plines$col <- rep(object@g.args$col, length.out = nlevels(fac))
+    ## setting colors
+    paramsToColor <- list(ppoints = list(col = object@adeg.par$ppoints$col, fill = object@adeg.par$ppoints$fill),
+                          plabels = list(col = object@adeg.par$plabels$col, boxes = list(border = object@adeg.par$plabels$boxes$border)),
+                          plines = list(col = object@adeg.par$plines$col))
+    
+    if(!(is.null(object@g.args$col) || (is.logical(object@g.args$col) && !object@g.args$col)))
+      adegtot <- modifyList(adegtot, col2adepar(ccol = object@g.args$col, pparamsToColor = paramsToColor, nnlev = nlevels(fac)))
     
     ## object modification before calling inherited method
     object@adeg.par <- adegtot
@@ -55,7 +54,9 @@ setMethod(
     df <- sweep(df, 1, rowSums(df), "/")
     object@stats$coords2d <- .coordtotriangleM(df, mini3 = object@g.args$min3d, maxi3 = object@g.args$max3d)[, 2:3]
 
+    ## never optimized labels for triangle.traject
     object@adeg.par$plabels$optim <- FALSE
+    
     assign(name_obj, object, envir = parent.frame())
   })
 
@@ -122,9 +123,7 @@ setMethod(
           y[i] <- (todrawY[[i]][suborder[middl[i]]] + todrawY[[i]][suborder[middl[i]+1]]) / 2
         }
       }
-      
-      ## always false here no optimization for straject object
-      object@adeg.par$plabels$optim <- FALSE
+
       adeg.panel.label(x, y, labels = labels, plabels = object@adeg.par$plabels)
     }
   })
