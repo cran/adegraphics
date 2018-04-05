@@ -20,19 +20,38 @@
   
   if(type == "boxplot") {
     ## parameter management
-    params$adepar <- list(plabels = list(boxes = list(draw = FALSE)), p1d = list(rug = list(draw = TRUE)), paxes = list(draw = TRUE, y = list(draw = FALSE)), 
-      plegend = list(drawKey = FALSE), pgrid = list(text = list(cex = 0)), psub = list(position = "topleft"))
+    params$adepar <- list(plabels = list(boxes = list(draw = FALSE)), p1d = list(rug = list(draw = TRUE)), 
+                          paxes = list(draw = TRUE, y = list(draw = FALSE)), 
+                          plegend = list(drawKey = FALSE), pgrid = list(text = list(cex = 0)),
+                          psub = list(position = "topleft"))
     params$g.args <- list(samelimits = FALSE)
     sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
     
     ## ADEgS creation
+    ADEglist <- list()
+    score <- x$l1[, xax]
     scorecall <- substitute(x$l1[, xax])
-    fac <- call("[", oritab, which.var)
-    object <- do.call("s1d.boxplot", c(list(score = scorecall, fac = fac, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$adepar, sortparameters$trellis, sortparameters$g.args, sortparameters$rest))
+    
+    for(i in which.var) {
+      ## data management
+      fac <- evTab[, i]
+      faccall <- call("[", oritab, 1:NROW(evTab), i)
+      
+      ADEglist[[i]] <- do.call("s1d.boxplot", c(list(score = scorecall, fac = faccall, plot = FALSE, storeData = storeData, pos = pos - 2), 
+                                                c(sortparameters$adepar, list(psub.text = paste0(colnames(evTab)[i], " (cr=", round(x$cr[i, xax], 2), ")"))),
+                                                sortparameters$trellis, sortparameters$g.args, sortparameters$rest))
+    }
+    ADEglist <- ADEglist[which.var]
+    
+    ## ADEgS creation
+    posmatrix <- layout2position(.n2mfrow(length(which.var)), ng = length(which.var))
+    object <- new(Class = "ADEgS", ADEglist = ADEglist, positions = posmatrix, add = matrix(0, ncol = length(which.var), nrow = length(which.var)), Call = match.call())
+    
     
   } else if(type == "points") {
     ## parameter management
-    params$adepar <- list(ppoints = list(pch = "|"), porigin = list(draw = FALSE), pgrid = list(draw = FALSE), psub = list(position = "topleft"), paxes = list(draw = TRUE), plabels = list(cex = 1.25))
+    params$adepar <- list(ppoints = list(pch = "|"), porigin = list(draw = FALSE), pgrid = list(draw = FALSE), 
+                          psub = list(position = "topleft"), paxes = list(draw = TRUE), plabels = list(cex = 1.25))
     sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
     
     ## creation of each individual ADEg
@@ -47,7 +66,9 @@
       dfxy <- call("cbind", scorecall, call("as.numeric", call("[", meangroup, faccall)))
       
       ## ADEg creation
-      g1 <- do.call("s.class", c(list(dfxy = dfxy, fac = faccall, plot = FALSE, storeData = storeData, pos = pos - 2), c(sortparameters$adepar, list(psub.text = colnames(evTab)[i])), sortparameters$trellis, sortparameters$g.args, sortparameters$rest))
+      g1 <- do.call("s.class", c(list(dfxy = dfxy, fac = faccall, ellipseSize = 0, plot = FALSE, storeData = storeData, pos = pos - 2), 
+                                 c(sortparameters$adepar, list(psub.text = paste0(colnames(evTab)[i], " (cr=", round(x$cr[i, xax], 2), ")"))), 
+                                 sortparameters$trellis, sortparameters$g.args, sortparameters$rest))
       xlimg1 <- g1@g.args$xlim
       ylimg1 <- g1@g.args$ylim
       g2 <- xyplot(score ~ fac, xlab = "", ylab = "", scales = list(x = list(tck = c(1, 0)), y = list(tck = c(1, 0))), xlim = xlimg1, ylim = ylimg1, 
@@ -110,7 +131,7 @@
     ## type of variable : quantitative
     if(type.var == "q") {
       ## parameters management
-      params$adepar <- list(psub = list(text = colnames(evTab)[i], position = "topleft"), paxes = list(aspectratio = "fill", draw = TRUE), porigin = list(include = FALSE), pgrid = list(draw = FALSE), plabels = list(cex = 0))
+      params$adepar <- list(psub = list(text = paste0(colnames(evTab)[i], " (r2=", round(x$cr[i, xax], 2), ")"), position = "topleft"), paxes = list(aspectratio = "fill", draw = TRUE), porigin = list(include = FALSE), pgrid = list(draw = FALSE), plabels = list(cex = 0))
       sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
       
       if(length(col.var) == 1) {
@@ -152,7 +173,8 @@
       if(type == "boxplot") {
         ## parameter management
         params$adepar <- list(plabels = list(boxes = list(draw = FALSE)), p1d = list(rug = list(draw = TRUE)), paxes = list(draw = TRUE, y = list(draw = FALSE)), 
-                              plegend = list(drawKey = FALSE), pgrid = list(text = list(cex = 0)), psub = list(position = "topleft"))
+                              plegend = list(drawKey = FALSE), pgrid = list(text = list(cex = 0)),
+                              psub = list(text = paste0(colnames(evTab)[i], " (cr=", round(x$cr[i, xax], 2), ")"), position = "topleft"))
         params$g.args <- list(samelimits = FALSE)
         sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
         
@@ -161,11 +183,14 @@
         
       } else if(type == "points") {
         ## parameter management
-        params$adepar <- list(ppoints = list(pch = "|"), porigin = list(draw = FALSE), paxes = list(aspectratio = "fill", draw = TRUE), pgrid = list(draw = FALSE), psub = list(text = colnames(evTab)[i], position = "topleft"))
+        params$adepar <- list(ppoints = list(pch = "|"), porigin = list(draw = FALSE), paxes = list(aspectratio = "fill", draw = TRUE), 
+                              pgrid = list(draw = FALSE), 
+                              psub = list(text = paste0(colnames(evTab)[i], " (cr=", round(x$cr[i, xax], 2), ")"), position = "topleft"))
         sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
         
         ## ADEg creation
-        g1 <- do.call("s.class", c(list(dfxy = dfxy, fac = faccall, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$adepar, sortparameters$trellis, sortparameters$g.args, sortparameters$rest))
+        g1 <- do.call("s.class", c(list(dfxy = dfxy, fac = faccall, ellipseSize = 0, plot = FALSE, storeData = storeData, pos = pos - 2), 
+                                   sortparameters$adepar, sortparameters$trellis, sortparameters$g.args, sortparameters$rest))
         xlimg1 <- g1@g.args$xlim
         ylimg1 <- g1@g.args$ylim
         g2 <- xyplot(score ~ fac, xlab = "", ylab = "", xlim = xlimg1, ylim = ylimg1, 
@@ -179,7 +204,9 @@
     ## type of variable : ordered
     else if(type.var == "o") {
       ## parameters management
-      params$adepar <- list(ppoints = list(pch = 20), paxes = list(aspectratio = "fill", draw = TRUE), porigin = list(draw = FALSE), pgrid = list(draw = FALSE), psub = list(text = colnames(evTab)[i], position = "topleft"))
+      params$adepar <- list(ppoints = list(pch = 20), paxes = list(aspectratio = "fill", draw = TRUE), 
+                            porigin = list(draw = FALSE), pgrid = list(draw = FALSE), 
+                            psub = list(text = paste0(colnames(evTab)[i], " (r2=", round(x$cr[i, xax], 2), ")"), position = "topleft"))
       sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
       
       ## data management
@@ -222,6 +249,7 @@
   
   ## prepare
   oritab <- as.list(x$call)[[2]]
+  type <- ade4::dudi.type(x$call)
   evTab <- eval.parent(oritab)
   if(is.null(which.var))
     which.var <- 1:ncol(evTab)
@@ -235,9 +263,12 @@
   ## creation of each individual ADEg
   ADEglist <- list()
   for(i in which.var) {
+    typedudi <- if(type == 3) {paste0(" (r=", round(x$co[i, xax], 2), ")")} else {""}
     dfxy <- call("cbind", substitute(x$l1[, xax]), call("[", oritab, 1:NROW(evTab), i))
     
-    g1 <- do.call("s.label", c(list(dfxy = dfxy, plot = FALSE, storeData = storeData, pos = pos - 2), c(sortparameters$adepar, list(psub.text = colnames(evTab)[i])), sortparameters$trellis, sortparameters$g.args, sortparameters$rest))
+    g1 <- do.call("s.label", c(list(dfxy = dfxy, plot = FALSE, storeData = storeData, pos = pos - 2), 
+                               c(sortparameters$adepar, list(psub.text = paste0(colnames(evTab)[i], typedudi))), 
+                               sortparameters$trellis, sortparameters$g.args, sortparameters$rest))
     g2 <- xyplot(eval(dfxy)[, 2] ~ eval(dfxy)[, 1], aspect = g1@adeg.par$paxes$aspectratio, panel = function(x, y) {panel.abline(lm(y ~ x))})
     g2$call <- call("xyplot", substitute(dfxy[, 2] ~ dfxy[, 1]), aspect = g1@adeg.par$paxes$aspectratio, panel = function(x, y) {panel.abline(lm(y ~ x))})
     ADEglist[[i]] <- superpose(g1, g2)
@@ -281,27 +312,30 @@
   params <- list()
   params$light_row <- list(plabels = list(cex = 0), ppoints = list(col = "grey20", alpha = 0.45, cex = 1.2, pch = 19))
   params$light_col <- list(plabels = list(cex = 0), ppoints = list(col = "grey20", alpha = 0.45, cex = 1.2, pch = 19))
-  
   params$heavy_row <- list(plabels = list(boxes = list(draw = TRUE), col = "red", srt = "horizontal"), ppoints = list(col = "red", cex = 1.2, pch = 19))
   params$heavy_col <- list(plabels = list(boxes = list(draw = TRUE), col = "blue", srt = "horizontal"), ppoints = list(col = "blue", cex = 1.2, pch = 19))
   params$eig <- list(pbackground = list(box = TRUE), psub = list(text = "Eigenvalues"))
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
+  # never display points under contribution threshold
+  sortparameters$light_row$plabels$cex <- 0
+  sortparameters$light_col$plabels$cex <- 0
+  
   ## management of the data and the parameters about the rows' contribution (individuals) on axes
-  if(!is.null(x$row.abs)) {
-    inertrow <- x$row.abs[, xax] / 100
-    # inertrow <- sqrt(x$row.abs[, xax]) / 100
-    inertrowcall <- call("/", call("[", call("$", substitute(x), "row.abs"), call(":", 1, call("NROW", call("$", substitute(x), "row.abs"))), xax), 100)
-    # inertrowcall <- call("/", call("sqrt", call("[", call("$", substitute(x), "row.abs"), call(":", 1, call("NROW", call("$", substitute(x), "row.abs"))), xax)), 100)
+  if(!is.null(x$row.rel)) {
+    inertrow <- abs(x$row.rel[, xax]) / 100
+    # inertrow <- sqrt(x$row.rel) / 100
+    inertrowcall <- call("/", call("abs", call("[", call("$", substitute(x), "row.rel"), call(":", 1, call("NROW", call("$", substitute(x), "row.rel"))), xax)), 100)
+    # inertrowcall <- call("/", call("sqrt", call("[", call("$", substitute(x), "row.rel"), call(":", 1, call("NROW", call("$", substitute(x), "row.rel"))), xax)), 100)
     lightrow <- subset(evTab$li[, xax], inertrow < cont)
     lightrowcall <- call("subset", call("[", call("$", ori[[2]], "li"), call(":", 1, call("NROW", call("$", ori[[2]], "li"))), xax), call("<", inertrowcall, cont))
     
     heavyrow <- subset(evTab$li[, xax], inertrow >= cont)
     heavyrowcall <- call("c", call("subset", call("[", call("$", ori[[2]], "li"), call(":", 1, call("NROW", call("$", ori[[2]], "li"))), xax), call(">=", inertrowcall, cont)), 0)
     if(length(heavyrow) == 0)
-      stop("No points to draw, try lowering 'cont' (see 'x$row.abs')")
+      stop("No points to draw, try lowering 'cont' (see 'x$row.rel')")
     heavy_inertrow <- subset(inertrow, inertrow >= cont)
-    names_heavyrow <- subset(rownames(x$row.abs), inertrow >= cont)
+    names_heavyrow <- subset(rownames(x$row.rel), inertrow >= cont)
     
     limglobal <- setlimits1D(mini = min(c(heavyrow, lightrow)), maxi = max(c(heavyrow, lightrow)), 
                              origin = adegtot$porigin$origin, includeOr = adegtot$porigin$include)
@@ -311,20 +345,20 @@
   }
   
   ## management of the data and the parameters about the columns' contribution (variables) on axes
-  if(!is.null(x$col.abs)) {
-    inertcol <- x$col.abs[, xax] / 100
-    # inertcol <- sqrt(x$col.abs[, xax]) / 100
-    inertcolcall <- call("/", call("[", call("$", substitute(x), "col.abs"), call(":", 1, call("NROW", call("$", substitute(x), "col.abs"))), xax), 100)
-    # inertcolcall <- call("/", call("sqrt", call("[", call("$", substitute(x), "col.abs"), call(":", 1, call("NROW", call("$", substitute(x), "col.abs"))), xax)), 100)
+  if(!is.null(x$col.rel)) {
+    inertcol <- abs(x$col.rel[, xax]) / 100
+    # inertcol <- sqrt(x$col.rel[, xax]) / 100
+    inertcolcall <- call("/", call("abs", call("[", call("$", substitute(x), "col.rel"), call(":", 1, call("NROW", call("$", substitute(x), "col.rel"))), xax)), 100)
+    # inertcolcall <- call("/", call("sqrt", call("[", call("$", substitute(x), "col.rel"), call(":", 1, call("NROW", call("$", substitute(x), "col.rel"))), xax)), 100)
     lightcol <- subset(evTab$co[, xax], inertcol < cont)
     lightcolcall <- call("subset", call("[", call("$", ori[[2]], "co"), call(":", 1, call("NROW", call("$", ori[[2]], "co"))), xax), call("<", inertcolcall, cont))
     
     heavycol <- subset(evTab$co[, xax], inertcol >= cont)
     heavycolcall <- call("c", call("subset", call("[", call("$", ori[[2]], "co"), call(":", 1, call("NROW", call("$", ori[[2]], "co"))), xax), call(">=", inertcolcall, cont)), 0)
     if(length(heavycol) == 0)
-      stop("No points to draw, try lowering 'cont' (see 'x$col.abs')")
+      stop("No points to draw, try lowering 'cont' (see 'x$col.rel')")
     heavy_inertcol <- subset(inertcol, inertcol >= cont)
-    names_heavycol <- subset(rownames(x$col.abs), inertcol >= cont)
+    names_heavycol <- subset(rownames(x$col.rel), inertcol >= cont)
     
     limglobal <- setlimits1D(mini = min(c(heavycol, lightcol)), maxi = max(c(heavycol, lightcol)), 
                              origin = adegtot$porigin$origin, includeOr = adegtot$porigin$include)
@@ -392,13 +426,13 @@
   }
   
   ## creation of the appropriate plot according to the input data
-  if(!is.null(x$row.abs) & is.null(x$col.abs))
+  if(!is.null(x$row.rel) & is.null(x$col.rel))
     object <- f_row(posi = position, pos = pos)
-  if(!is.null(x$col.abs) & is.null(x$row.abs))
+  if(!is.null(x$col.rel) & is.null(x$row.rel))
     object <- f_col(posi = position, pos = pos)
-  if(!is.null(x$row.abs) & !is.null(x$col.abs))
+  if(!is.null(x$row.rel) & !is.null(x$col.rel))
     object <- f_both(posi = position, pos = pos)
-  if(is.null(x$row.abs) & is.null(x$col.abs))
+  if(is.null(x$row.rel) & is.null(x$col.rel))
     stop(paste("No inertia was calculated in the ", substitute(x), " object", sep = ""))
   
   object@Call <- match.call()

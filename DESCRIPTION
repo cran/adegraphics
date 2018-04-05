@@ -2,8 +2,8 @@ Package: adegraphics
 Type: Package
 Title: An S4 Lattice-Based Package for the Representation of
         Multivariate Data
-Version: 1.0-9
-Date: 2017-12-15
+Version: 1.0-10
+Date: 2018-04-05
 Author: Stéphane Dray <stephane.dray@univ-lyon1.fr> and Aurélie Siberchicot <aurelie.siberchicot@univ-lyon1.fr>, with contributions from Jean Thioulouse. Based on earlier work by Alice Julien-Laferrière.
 Maintainer: Aurélie Siberchicot <aurelie.siberchicot@univ-lyon1.fr>
 Description: Graphical functionalities for the representation of multivariate data. It is a complete re-implementation of the functions available in the 'ade4' package.
@@ -11,8 +11,7 @@ Depends: R (>= 3.0.2)
 License: GPL (>= 2)
 Imports: ade4, graphics, grid, KernSmooth, lattice, latticeExtra,
         methods, RColorBrewer, sp (>= 1.1-1), stats
-Suggests: Guerry, knitr, maptools, pixmap, rgdal, rmarkdown, spData (>=
-        0.2.6.2), spdep, splancs
+Suggests: Guerry, knitr, maptools, pixmap, rmarkdown, spdep, splancs
 Collate: adeGsenv.R parameter.R utils.R utilstriangle.R genericMethod.R
         utilsclass.R panelfunctions.R ADEg.R ADEgS.R utilsADEgS.R
         ADEg.C1.R C1.barchart.R C1.curve.R C1.curves.R C1.density.R
@@ -31,6 +30,6 @@ BugReports: https://github.com/sdray/adegraphics/issues
 Encoding: UTF-8
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2017-12-15 10:42:29 UTC; aurelie
+Packaged: 2018-04-05 12:34:20 UTC; aurelie
 Repository: CRAN
-Date/Publication: 2017-12-15 11:50:13 UTC
+Date/Publication: 2018-04-05 13:13:02 UTC

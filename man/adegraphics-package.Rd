@@ -34,8 +34,8 @@
   \tabular{ll}{
     Package: \tab adegraphics\cr
     Type: \tab Package\cr
-    Version: \tab 1.0-9\cr
-    Date: \tab 2017-12-15\cr
+    Version: \tab 1.0-10\cr
+    Date: \tab 2018-04-05\cr
     License: \tab GPL (>=2)\cr
     Depends: \tab ade4, graphics, grid, KernSmooth, lattice, latticeExtra, methods, RColorBrewer, sp (>= 1.1-1), stats
   }
@@ -64,7 +64,9 @@
 }
 
 \references{
-  See \code{ade4} website: <URL: http://pbil.univ-lyon1.fr/ADE-4/>
+  Aurélie Siberchicot, Alice Julien-Laferrière, Anne-Béatrice Dufour, Jean Thioulouse and Stéphane Dray (2017). adegraphics: An S4
+  Lattice-Based Package for the Representation of Multivariate Data. The R Journal. 9:2. 198--212.
+  https://journal.r-project.org/archive/2017/RJ-2017-042/index.html
 }
 
 \keyword{package}

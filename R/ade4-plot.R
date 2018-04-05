@@ -88,7 +88,7 @@
   oritab <- as.list(x$call)[[2]]
   evTab <- eval.parent(oritab)
   indica <- factor(rep(names(x$blo), x$blo))
-  ng <- length(levels(indica))   
+  ng <- length(levels(indica))
   
   ## parameter management
   graphsnames <- as.character(levels(indica))
@@ -1302,10 +1302,10 @@
   
   ## default values for parameters
   params <- list()
-  params[[1]] <- list(plines.col = "red", ppoints.col = "red", p1d.horizontal = FALSE, paxes.draw = TRUE, ppoints.cex = 2, ylab = "Root Mean Square Error", ylim = lim, porigin = origin)
-  params[[2]] <- list(plines.col = "red", ppoly.col = "red", p1d.horizontal = FALSE, paxes.draw = TRUE, method = "bars")
-  params[[3]] <- list(plines.col = "blue", ppoints.col = "blue", p1d.horizontal = FALSE, paxes.draw = TRUE, ppoints.cex = 2)
-  params[[4]] <- list(plines.col = "blue", ppoly.col = "blue", p1d.horizontal = FALSE, paxes.draw = TRUE, method = "bars")
+  params[[1]] <- list(plines = list(col = "red"), ppoints = list(col = "red", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), ylab = "Root Mean Square Error", ylim = lim, porigin = origin)
+  params[[2]] <- list(plines = list(col = "red"), ppolygons = list(col = "red"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "bars")
+  params[[3]] <- list(plines = list(col = "blue"), ppoints = list(col = "blue", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE))
+  params[[4]] <- list(plines = list(col = "blue"), ppolygons = list(col = "blue"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "bars")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
@@ -1341,10 +1341,10 @@
   
   ## default values for parameters
   params <- list()
-  params[[1]] <- list(plines.col = "red", ppoints.col = "red", p1d.horizontal = FALSE, paxes.draw = TRUE, ppoints.cex = 2, ylab = "Root Mean Square Error", ylim = lim, porigin = origin)
-  params[[2]] <- list(plines.col = "red", ppoly.col = "red", p1d.horizontal = FALSE, paxes.draw = TRUE, method = "area")
-  params[[3]] <- list(plines.col = "blue", ppoints.col = "blue", p1d.horizontal = FALSE, paxes.draw = TRUE, ppoints.cex = 2)
-  params[[4]] <- list(plines.col = "blue", ppoly.col = "blue", p1d.horizontal = FALSE, paxes.draw = TRUE, method = "area")
+  params[[1]] <- list(plines = list(col = "red"), ppoints = list(col = "red", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), ylab = "Root Mean Square Error", ylim = lim, porigin = origin)
+  params[[2]] <- list(plines = list(col = "red"), ppolygons = list(col = "red"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "area")
+  params[[3]] <- list(plines = list(col = "blue"), ppoints = list(col = "blue", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE))
+  params[[4]] <- list(plines = list(col = "blue"), ppolygons = list(col = "blue"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "area")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
@@ -1380,8 +1380,8 @@
   
   ## default values for parameters
   params <- list()
-  params[[1]] <- list(p1d.horizontal = FALSE, paxes.draw = TRUE, ppoints.cex = 2, ylim = lim, porigin = origin)
-  params[[2]] <- list(p1d.horizontal = FALSE, paxes.draw = TRUE, method = "bars")
+  params[[1]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), ppoints = list(cex = 2), ylim = lim, porigin = origin)
+  params[[2]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "bars")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
@@ -1414,8 +1414,8 @@
   
   ## default values for parameters
   params <- list()
-  params[[1]] <- list(p1d.horizontal = FALSE, paxes.draw = TRUE, ppoints.cex = 2, ylim = lim, porigin = origin)
-  params[[2]] <- list(p1d.horizontal = FALSE, paxes.draw = TRUE, method = "bars")
+  params[[1]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), ppoints = list(cex = 2), ylim = lim, porigin = origin)
+  params[[2]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "bars")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
@@ -1486,10 +1486,14 @@
   params$eig <- list(pbackground = list(box = TRUE), psub = list(text = "Eigenvalues"))
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
+  # never display points under contribution threshold
+  sortparameters$light_row$plabels$cex <- 0
+  sortparameters$light_col$plabels$cex <- 0
+  
   ## management of the data and the parameters about the rows' contribution (individuals) on axes
-  if(!is.null(x$row.abs)) {
-    inertrow <- x$row.abs[, c(xax, yax)] / 100
-    inertrowcall <- call("/", call("[", call("$", substitute(x), "row.abs"), call(":", 1, call("NROW", call("$", substitute(x), "row.abs"))), c(xax, yax)), 100)
+  if(!is.null(x$row.rel)) {
+    inertrow <- abs(x$row.rel[, c(xax, yax)]) / 100
+    inertrowcall <- call("/", call("abs", call("[", call("$", substitute(x), "row.rel"), call(":", 1, call("NROW", call("$", substitute(x), "row.rel"))), c(xax, yax))), 100)
     lightrow <- subset(evTab$li[, c(xax, yax)], inertrow[, 1] < cont & inertrow[, 2] < cont)
     lightrowcall <- call("subset", call("[", call("$", ori[[2]], "li"), call(":", 1, call("NROW", call("$", ori[[2]], "li"))), c(xax, yax)), call("&", call("<", call("[", inertrowcall, 1), cont), call("<", call("[", inertrowcall, 2), cont)))
     
@@ -1534,9 +1538,9 @@
   }
   
   ## management of the data and the parameters about the columns' contribution (variables) on axes
-  if(!is.null(x$col.abs)) {
-    inertcol <- x$col.abs[, c(xax, yax)] / 100
-    inertcolcall <- call("/", call("[", call("$", substitute(x), "col.abs"), call(":", 1, call("NROW", call("$", substitute(x), "col.abs"))), c(xax, yax)), 100)
+  if(!is.null(x$col.rel)) {
+    inertcol <- abs(x$col.rel[, c(xax, yax)]) / 100
+    inertcolcall <- call("/", call("abs", call("[", call("$", substitute(x), "col.rel"), call(":", 1, call("NROW", call("$", substitute(x), "col.rel"))), c(xax, yax))), 100)
     lightcol <- subset(evTab$co[, c(xax, yax)], inertcol[, 1] < cont & inertcol[, 2] < cont)
     lightcolcall <- call("subset", call("[", call("$", ori[[2]], "co"), call(":", 1, call("NROW", call("$", ori[[2]], "co"))), c(xax, yax)), call("&", call("<", call("[", inertcolcall, 1), cont), call("<", call("[", inertcolcall, 2), cont)))
     
@@ -1629,17 +1633,97 @@
   }
   
   ## creation of the appropriate plot according to the input data
-  if(!is.null(x$row.abs) & is.null(x$col.abs))
+  if(!is.null(x$row.rel) & is.null(x$col.rel))
     object <- f_row(posi = position, pos = pos)
-  if(!is.null(x$col.abs) & is.null(x$row.abs))
+  if(!is.null(x$col.rel) & is.null(x$row.rel))
     object <- f_col(posi = position, pos = pos)
-  if(!is.null(x$row.abs) & !is.null(x$col.abs))
+  if(!is.null(x$row.rel) & !is.null(x$col.rel))
     object <- f_both(posi = position, pos = pos)
-  if(is.null(x$row.abs) & is.null(x$col.abs))
+  if(is.null(x$row.rel) & is.null(x$col.rel))
     stop(paste("No inertia was calculated in the ", substitute(x), " object", sep = ""))
   
   object@Call <- match.call()
   
+  if(plot)
+    print(object)
+  invisible(object)
+}
+
+
+"plot.randtest" <- function(x, nclass = 10, coeff = 1, pos = -1, storeData = TRUE, plot = TRUE, ...) {
+  
+  if(!inherits(x, "randtest")) 
+    stop("Object of class 'randtest' expected")
+  
+  # by default, in ade4, as.randtest computes the histogram with 10 class
+  # x$sim is available only if !inherits(x, "lightrandtest")
+  if(!inherits(x, "lightrandtest") & nclass != 10){
+    h0 <- hist(x$sim, plot = FALSE, nclass = nclass)
+  } else {
+    h0 <- x$plot$hist
+  }
+  
+  ## common limits
+  mylim <- x$plot$xlim
+  
+  ## parameter management
+  graphsnames <- c("sim", "obs")
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
+  params <- list()
+  params[[1]] <- list(p1d = list(horizontal = TRUE), pgrid = list(draw = FALSE), paxes = list(draw = TRUE), xlim = mylim, main = "Histogram of sim", xlab = "sim", ylab = "Frequency")
+  params[[2]] <- list(plines = list(lwd = 1.5), ppoints = list(pch = 18, cex = 1.5))
+  names(params) <- graphsnames
+  sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+  
+  ## plot creation
+  object <- plotRandTest(hist = h0, nclass = nclass, obs = x$obs, params = sortparameters)
+  names(object) <- graphsnames
+  object@Call <- match.call()
+  if(plot)
+    print(object)
+  invisible(object)
+}
+
+
+"plot.krandtest" <- function (x, nclass = 10, pos = -1, storeData = TRUE, plot = TRUE, ...) {
+  
+  if (!inherits(x, "krandtest")) 
+    stop("Object of class 'krandtest' expected")
+  
+  ng <- x$ntest
+  maintitle <- x$names
+  
+  ## parameter management
+  graphsnames <- paste0("g", seq_len(ng))
+  sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
+  params <- list()
+  params <- lapply(seq_len(ng), function(i) {params[[i]] <- list(p1d = list(horizontal = TRUE), pgrid = list(draw = FALSE), paxes = list(draw = TRUE), 
+                                                                           xlim = x$plot[[i]]$xlim, main = maintitle[i], xlab = "", ylab = "",
+                                                                           plines = list(lwd = 1.5), ppoints = list(pch = 18, cex = 1.5))})
+  names(params) <- graphsnames
+  sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+  
+  
+  if(inherits(x, "lightkrandtest")) {
+    l <- list()
+    l <- sapply(seq_len(ng), function(i) {do.call("plotRandTest", c(list(hist = x$plot[[i]]$hist, nclass = nclass, obs = x$obs[i], params = sortparameters[[i]])))})
+    
+    ## ADEgS creation
+    object <- new(Class = "ADEgS", ADEglist = l, positions = layout2position(rev(.n2mfrow(ng)), ng  = ng), add = matrix(0, ncol = ng, nrow = ng), Call = match.call())
+    names(object) <- graphsnames
+    
+  } else {
+    l <- list()
+    for (k in 1:x$ntest) {
+      rd <- as.randtest(x$sim[, k], x$obs[k], output = "full")
+      l[[k]] <- do.call("plot.randtest", c(list(rd, nclass = nclass, plot = FALSE), sortparameters[[k]]))
+    }
+    ## ADEgS creation
+    object <- new(Class = "ADEgS", ADEglist = l, positions = layout2position(rev(.n2mfrow(ng)), ng  = ng), add = matrix(0, ncol = ng, nrow = ng), Call = match.call())
+    names(object) <- graphsnames
+  }
+  
+  object@Call <- match.call()
   if(plot)
     print(object)
   invisible(object)

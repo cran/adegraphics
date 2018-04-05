@@ -19,18 +19,41 @@ plotEig <- function(eigvalue, nf, xax = 1, yax = 2, col.plot = "black", col.kept
     
   	lim.val <- range(eigvalue)
   	if(lim.val[1] >= 0) {
-	    lim.val <- c(0, lim.val[2] + diff(c(lim.val[1], lim.val[2])) / 10)
-    	if(isTRUE(sortparameters$adepar$p1d$horizontal))
-	  	  params$g.args <- list(xlim = lim.val, ylim = params$g.args$ylim)
-    	else
-	      params$g.args <- list(xlim = params$g.args$xlim, ylim = lim.val)
-	  }
+  	  lim.val <- c(0, lim.val[2] + diff(c(lim.val[1], lim.val[2])) / 10)
+  	  if(isTRUE(sortparameters$adepar$p1d$horizontal))
+  	    params$g.args <- list(xlim = lim.val, ylim = params$g.args$ylim)
+  	  else
+  	    params$g.args <- list(xlim = params$g.args$xlim, ylim = lim.val)
+  	}
+  	
+  	at <- 1:length(eigvalue)
   } else {
     params$g.args <- list(xlim = NULL, ylim = NULL)
+    at <- unlist(sapply(tabulate(facets), seq_len))
   }
   
   sortparameters$g.args <- modifyList(params$g.args, sortparameters$g.args, keep.null = TRUE)
-  do.call("s1d.barchart", c(list(score = substitute(eigvalue), pos = pos - 2, plot = plot, facets = facets, storeData = storeData), sortparameters$adepar, sortparameters$trellis, sortparameters$g.args, sortparameters$stats, sortparameters$s.misc, sortparameters$rest))
+  do.call("s1d.barchart", c(list(score = substitute(eigvalue), at = at, pos = pos - 2, plot = plot, facets = facets, storeData = storeData), 
+                            sortparameters$adepar, sortparameters$trellis, sortparameters$g.args, sortparameters$stats, sortparameters$s.misc, sortparameters$rest))
+}
+
+
+"plotRandTest" <- function(hist, nclass, obs, pos = -1, storeData = TRUE, plot = TRUE, params) {
+  graphsnames <- c("sim", "obs")
+  sortparameters <- sortparamADEgS(params, graphsnames = graphsnames)
+  
+  ## creation of each individual ADEg
+  g1 <- do.call("s1d.hist", c(list(score = hist, nclass = nclass, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]]))
+  g2 <- do.call("addsegment", c(list(g1, x0 = obs, x1 = obs, y0 = 0, y1 = max(hist$counts) / 2, 
+                                     plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
+  g3 <- do.call("addpoint", c(list(g1, xcoord = obs, ycoord = max(hist$counts) / 2, 
+                                   plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
+  g4 <- g2$segmentadded + g3$pointadded
+  
+  ## ADEgS creation
+  object <- superpose(g1, g4)
+  names(object) <- graphsnames
+  return(object)
 }
 
 
