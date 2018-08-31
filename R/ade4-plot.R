@@ -851,7 +851,7 @@
   sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
   
   ## compute limits
-  df <- rbind(as.matrix(x$li), as.matrix(x$Tli), as.matrix(x$Tco))
+  df <- rbind(as.matrix(x$li), as.matrix(x$co), as.matrix(x$Tli), as.matrix(x$Tco))
   adegtot <- adegpar()
   lim.global <- setlimits2D(minX = min(df[, xax]), maxX = max(df[, xax]), minY = min(df[, yax]), maxY = max(df[, yax]), origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
   
@@ -1302,10 +1302,10 @@
   
   ## default values for parameters
   params <- list()
-  params[[1]] <- list(plines = list(col = "red"), ppoints = list(col = "red", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), ylab = "Root Mean Square Error", ylim = lim, porigin = origin)
-  params[[2]] <- list(plines = list(col = "red"), ppolygons = list(col = "red"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "bars")
-  params[[3]] <- list(plines = list(col = "blue"), ppoints = list(col = "blue", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE))
-  params[[4]] <- list(plines = list(col = "blue"), ppolygons = list(col = "blue"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "bars")
+  params[[1]] <- list(plines = list(col = "red"), ppoints = list(col = "red", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)), ylab = "Root Mean Square Error", ylim = lim, porigin = origin)
+  params[[2]] <- list(plines = list(col = "red"), ppolygons = list(col = "red"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)), method = "bars")
+  params[[3]] <- list(plines = list(col = "blue"), ppoints = list(col = "blue", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)))
+  params[[4]] <- list(plines = list(col = "blue"), ppolygons = list(col = "blue"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)), method = "bars")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
@@ -1341,15 +1341,15 @@
   
   ## default values for parameters
   params <- list()
-  params[[1]] <- list(plines = list(col = "red"), ppoints = list(col = "red", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), ylab = "Root Mean Square Error", ylim = lim, porigin = origin)
-  params[[2]] <- list(plines = list(col = "red"), ppolygons = list(col = "red"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "area")
-  params[[3]] <- list(plines = list(col = "blue"), ppoints = list(col = "blue", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE))
-  params[[4]] <- list(plines = list(col = "blue"), ppolygons = list(col = "blue"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "area")
+  params[[1]] <- list(plines = list(col = "red"), ppoints = list(col = "red", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)), ylab = "Root Mean Square Error", ylim = lim, porigin = origin)
+  params[[2]] <- list(plines = list(col = "red"), ppolygons = list(col = "red"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)), method = "area")
+  params[[3]] <- list(plines = list(col = "blue"), ppoints = list(col = "blue", cex = 2), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)))
+  params[[4]] <- list(plines = list(col = "blue"), ppolygons = list(col = "blue"), p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)), method = "area")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
   ## creation of each individual ADEg
-  g1 <- do.call("s1d.curve", c(list(score = substitute(x$statsRMSEc[, 1]), key = list(corner = c(0,1), text = list(c("RMSEc", "RMSEv"), col = c(sortparameters[[1]]$plines.col, sortparameters[[3]]$plines.col))), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]]))
+  g1 <- do.call("s1d.curve", c(list(score = substitute(x$statsRMSEc[, 1]), key = list(corner = c(0,1), text = list(c("RMSEc", "RMSEv"), col = c(sortparameters[[1]]$plines$col, sortparameters[[3]]$plines$col))), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]]))
   g2 <- do.call("s1d.interval", c(list(score1 = substitute(x$statsRMSEc[, 2]), score2 = substitute(x$statsRMSEc[, 3]), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
   g3 <- do.call("s1d.curve", c(list(score = substitute(x$statsRMSEv[, 1]), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]]))
   g4 <- do.call("s1d.interval", c(list(score1 = substitute(x$statsRMSEv[, 2]), score2 = substitute(x$statsRMSEv[, 3]), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
@@ -1380,8 +1380,8 @@
   
   ## default values for parameters
   params <- list()
-  params[[1]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), ppoints = list(cex = 2), ylim = lim, porigin = origin)
-  params[[2]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "bars")
+  params[[1]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)), ppoints = list(cex = 2), ylim = lim, porigin = origin)
+  params[[2]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), pgrid = list(text = list(cex = 0)), method = "bars")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
@@ -1414,13 +1414,13 @@
   
   ## default values for parameters
   params <- list()
-  params[[1]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), ppoints = list(cex = 2), ylim = lim, porigin = origin)
-  params[[2]] <- list(p1d = list(horizontal = FALSE), paxes = list(draw = TRUE), method = "bars")
+  params[[1]] <- list(p1d = list(horizontal = FALSE), pgrid = list(text = list(cex = 0)), paxes = list(draw = TRUE), ppoints = list(cex = 2), ylim = lim, porigin = origin)
+  params[[2]] <- list(p1d = list(horizontal = FALSE), pgrid = list(text = list(cex = 0)), paxes = list(draw = TRUE), method = "bars")
   names(params) <- graphsnames
   sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
   
-  lab <- list(list(labels = rownames(x$stats), rot = 90))
-  names(lab) <- ifelse(sortparameters[[1]]$p1d.horizontal == FALSE, "x", "y")
+  lab <- list(list(labels = rownames(x$stats), at = 1:length(rownames(x$stats)), rot = 90))
+  names(lab)[1] <- ifelse(sortparameters[[1]]$p1d$horizontal == FALSE, "x", "y")
   ## creation of each individual ADEg
   g1 <- do.call("s1d.curve", c(list(score = substitute(x$obs), scales = lab, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[1]]))
   g2 <- do.call("s1d.interval", c(list(score1 = substitute(x$stats[, 1]), score2 = substitute(x$stats[, 2]), plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[2]]))
@@ -1435,7 +1435,7 @@
 }
 
 
-"plot.inertia" <- function(x, xax = 1, yax = 2, cont = 0.1, type = c("label", "cross", "ellipse", "both"), ellipseSize = 1.5, 
+"plot.inertia" <- function(x, xax = 1, yax = 2, threshold = 0.1, contrib = c("abs", "rel"), type = c("label", "cross", "ellipse", "both"), ellipseSize = 1.5, 
                            posieig = "none", plot = TRUE, storeData = TRUE, pos = -1, ...) {
   
   if(!inherits(x, "inertia")) 
@@ -1457,8 +1457,8 @@
   
   adegtot <- adegpar()
   position <- match.arg(posieig[1], choices = c("bottomleft", "bottomright", "topleft", "topright", "none"), several.ok = FALSE)
-  type <- match.arg(type)
-  type <- type[1]
+  type <- match.arg(type)[1]
+  contrib <- match.arg(contrib)[1]
   
   ## sort parameters for each graph
   graphsnames <- c("light_row", "heavy_row", "light_col", "heavy_col", "eig")
@@ -1492,31 +1492,24 @@
   
   ## management of the data and the parameters about the rows' contribution (individuals) on axes
   if(!is.null(x$row.rel)) {
-    inertrow <- abs(x$row.rel[, c(xax, yax)]) / 100
-    inertrowcall <- call("/", call("abs", call("[", call("$", substitute(x), "row.rel"), call(":", 1, call("NROW", call("$", substitute(x), "row.rel"))), c(xax, yax))), 100)
-    lightrow <- subset(evTab$li[, c(xax, yax)], inertrow[, 1] < cont & inertrow[, 2] < cont)
-    lightrowcall <- call("subset", call("[", call("$", ori[[2]], "li"), call(":", 1, call("NROW", call("$", ori[[2]], "li"))), c(xax, yax)), call("&", call("<", call("[", inertrowcall, 1), cont), call("<", call("[", inertrowcall, 2), cont)))
     
-    heavyrow <- subset(evTab$li[, c(xax, yax)], inertrow[, 1] >= cont | inertrow[, 2] >= cont)
-    heavyrowcall <- call("subset", call("[", call("$", ori[[2]], "li"), call(":", 1, call("NROW", call("$", ori[[2]], "li"))), c(xax, yax)), call("&", call(">=", call("[", inertrowcall, 1), cont), call(">=", call("[", inertrowcall, 2), cont)))
-    if(nrow(heavyrow) == 0)
-      stop("No points to draw, try lowering 'cont'")
-    heavy_inertrow <- subset(inertrow, inertrow[, 1] >= cont | inertrow[, 2] >= cont)
-    heavy_inertrowcum <- apply(heavy_inertrow, 1, sum)
-    
-    if(type == "label"){
-      if(is.null(sortparameters$heavy_row$plabels$cex)) {
-        sortparameters$heavy_row$plabels$cex <- heavy_inertrowcum / (max(heavy_inertrowcum) / 1.5)
-      } else {
-        sortparameters$heavy_row$plabels$cex <- sortparameters$heavy_row$plabels$cex * heavy_inertrowcum / (max(heavy_inertrowcum) / 1.5)
-      }
-    }
-    
-    limglobal <- setlimits2D(minX = min(c(heavyrow[, 1], lightrow[, 1])), maxX = max(c(heavyrow[, 1], lightrow[, 1])), 
-                             minY = min(c(heavyrow[, 2], lightrow[, 2])), maxY = max(c(heavyrow[, 2], lightrow[, 2])),
-                             origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+    datacontrib <- x[[ifelse(contrib == "abs", "row.abs", "row.rel")]]
+    datacontrib <- datacontrib[, c(xax, yax)]
     
     if(type != "label") {
+      inertrow <- abs(datacontrib) / 100
+      lightrow <- subset(evTab$li[, c(xax, yax)], inertrow[, 1] < threshold & inertrow[, 2] < threshold)
+      heavyrow <- subset(evTab$li[, c(xax, yax)], inertrow[, 1] >= threshold | inertrow[, 2] >= threshold)
+
+      if(nrow(heavyrow) == 0)
+        stop("No points to draw, try lowering 'threshold'")
+      
+      heavy_inertrow <- subset(inertrow, inertrow[, 1] >= threshold | inertrow[, 2] >= threshold)
+      
+      limglobal <- setlimits2D(minX = min(c(heavyrow[, 1], lightrow[, 1])), maxX = max(c(heavyrow[, 1], lightrow[, 1])), 
+                               minY = min(c(heavyrow[, 2], lightrow[, 2])), maxY = max(c(heavyrow[, 2], lightrow[, 2])),
+                               origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+      
       # if ellipses or crosses are drawn, the limits are re-calculated and the elipses size are normalized
       heavy_inertrowmax <- apply(heavy_inertrow, 2, max)
       heavy_inertrownorm <- matrix(NA, NROW(heavy_inertrow), 2)
@@ -1530,6 +1523,34 @@
       limglobal <- setlimits2D(minX = min(c(cont_row[, 1], lightrow[, 1])), maxX = max(c(cont_row[, 1], lightrow[, 1])), 
                                minY = min(c(cont_row[, 2], lightrow[, 2])), maxY = max(c(cont_row[, 2], lightrow[, 2])),
                                origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+      
+    } else {
+      if(contrib == "abs") {
+        temp <- sweep(datacontrib, 2, x$tot.inertia$inertia[c(xax, yax)], "*") / 100
+        tempsum <- apply(temp, 1, sum)
+        lambdasum <- sum(x$tot.inertia$inertia[c(xax, yax)])
+        inertrow_cumul <- tempsum / lambdasum
+      } else {
+        inertrow <- abs(datacontrib) / 100
+        inertrow_cumul <- apply(inertrow, 1, sum)
+      }
+      
+      lightrow <- subset(evTab$li[, c(xax, yax)], inertrow_cumul < threshold)
+      heavyrow <- subset(evTab$li[, c(xax, yax)], inertrow_cumul >= threshold)
+      heavy_inertrow <- subset(inertrow_cumul, inertrow_cumul >= threshold)
+      
+      if(nrow(heavyrow) == 0)
+        stop("No points to draw, try lowering 'threshold'")
+      
+      if(is.null(sortparameters$heavy_row$plabels$cex)) {
+        sortparameters$heavy_row$plabels$cex <- heavy_inertrow / (max(heavy_inertrow) / 2)
+      } else {
+        sortparameters$heavy_row$plabels$cex <- sortparameters$heavy_row$plabels$cex * heavy_inertrow / (max(heavy_inertrow) / 2)
+      }
+      
+      limglobal <- setlimits2D(minX = min(c(heavyrow[, 1], lightrow[, 1])), maxX = max(c(heavyrow[, 1], lightrow[, 1])), 
+                               minY = min(c(heavyrow[, 2], lightrow[, 2])), maxY = max(c(heavyrow[, 2], lightrow[, 2])),
+                               origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
     }
     
     params <- list()
@@ -1539,31 +1560,25 @@
   
   ## management of the data and the parameters about the columns' contribution (variables) on axes
   if(!is.null(x$col.rel)) {
-    inertcol <- abs(x$col.rel[, c(xax, yax)]) / 100
-    inertcolcall <- call("/", call("abs", call("[", call("$", substitute(x), "col.rel"), call(":", 1, call("NROW", call("$", substitute(x), "col.rel"))), c(xax, yax))), 100)
-    lightcol <- subset(evTab$co[, c(xax, yax)], inertcol[, 1] < cont & inertcol[, 2] < cont)
-    lightcolcall <- call("subset", call("[", call("$", ori[[2]], "co"), call(":", 1, call("NROW", call("$", ori[[2]], "co"))), c(xax, yax)), call("&", call("<", call("[", inertcolcall, 1), cont), call("<", call("[", inertcolcall, 2), cont)))
     
-    heavycol <- subset(evTab$co[, c(xax, yax)], inertcol[, 1] >= cont | inertcol[, 2] >= cont)
-    heavycolcall <- call("subset", call("[", call("$", ori[[2]], "co"), call(":", 1, call("NROW", call("$", ori[[2]], "co"))), c(xax, yax)), call("&", call(">=", call("[", inertcolcall, 1), cont), call(">=", call("[", inertcolcall, 2), cont)))
-    if(nrow(heavycol) == 0)
-      stop("No points to draw, try lowering 'cont'")
-    heavy_inertcol <- subset(inertcol, inertcol[, 1] >= cont | inertcol[, 2] >= cont)
-    heavy_inertcolcum <- apply(heavy_inertcol, 1, sum)
-    
-    if(type == "label") {
-      if(is.null(sortparameters$heavy_col$plabels$cex)) {
-        sortparameters$heavy_col$plabels$cex <- heavy_inertcolcum / (max(heavy_inertcolcum) / 1.5)
-      } else {
-        sortparameters$heavy_col$plabels$cex <- sortparameters$heavy_col$plabels$cex * heavy_inertcolcum / (max(heavy_inertcolcum) / 1.5)
-      }
-    }
-    
-    limglobal <- setlimits2D(minX = min(c(heavycol[, 1], lightcol[, 1])), maxX = max(c(heavycol[, 1], lightcol[, 1])), 
-                             minY = min(c(heavycol[, 2], lightcol[, 2])), maxY = max(c(heavycol[, 2], lightcol[, 2])),
-                             origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+    datacontrib <- x[[ifelse(contrib == "abs", "col.abs", "col.rel")]]
+    datacontrib <- datacontrib[, c(xax, yax)]
     
     if(type != "label") {
+      
+      inertcol <- abs(datacontrib) / 100
+      lightcol <- subset(evTab$co[, c(xax, yax)], inertcol[, 1] < threshold & inertcol[, 2] < threshold)
+      heavycol <- subset(evTab$co[, c(xax, yax)], inertcol[, 1] >= threshold | inertcol[, 2] >= threshold)
+
+      if(nrow(heavycol) == 0)
+        stop("No points to draw, try lowering 'threshold'")
+      
+      heavy_inertcol <- subset(inertcol, inertcol[, 1] >= threshold | inertcol[, 2] >= threshold)
+      
+      limglobal <- setlimits2D(minX = min(c(heavycol[, 1], lightcol[, 1])), maxX = max(c(heavycol[, 1], lightcol[, 1])), 
+                               minY = min(c(heavycol[, 2], lightcol[, 2])), maxY = max(c(heavycol[, 2], lightcol[, 2])),
+                               origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+      
       # if ellipses or crosses are drawn, the limits are re-calculated and the ellipse size are normalized
       heavy_inertcolmax <- apply(heavy_inertcol, 2, max)
       heavy_inertcolnorm <- matrix(NA, NROW(heavy_inertcol), 2)
@@ -1576,6 +1591,33 @@
       fac_col <- as.factor(rep(rownames(heavycol), 4))
       limglobal <- setlimits2D(minX = min(c(cont_col[, 1], lightcol[, 1])), maxX = max(c(cont_col[, 1], lightcol[, 1])), 
                                minY = min(c(cont_col[, 2], lightcol[, 2])), maxY = max(c(cont_col[, 2], lightcol[, 2])),
+                               origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
+    } else {
+      if(contrib == "abs") {
+        temp <- sweep(datacontrib, 2, x$tot.inertia$inertia[c(xax, yax)], "*") / 100
+        tempsum <- apply(temp, 1, sum)
+        lambdasum <- sum(x$tot.inertia$inertia[c(xax, yax)])
+        inertcol_cumul <- tempsum / lambdasum
+      } else {
+        inertcol <- abs(datacontrib) / 100
+        inertcol_cumul <- apply(inertcol, 1, sum)
+      }
+      
+      lightcol <- subset(evTab$co[, c(xax, yax)], inertcol_cumul < threshold)
+      heavycol <- subset(evTab$co[, c(xax, yax)], inertcol_cumul >= threshold)
+      heavy_inertcolnorm <- subset(inertcol_cumul, inertcol_cumul >= threshold)
+      
+      if(nrow(heavycol) == 0)
+        stop("No points to draw, try lowering 'threshold'")
+      
+      if(is.null(sortparameters$heavy_col$plabels$cex)) {
+        sortparameters$heavy_col$plabels$cex <- heavy_inertcolnorm / (max(heavy_inertcolnorm) / 2)
+      } else {
+        sortparameters$heavy_col$plabels$cex <- sortparameters$heavy_col$plabels$cex * heavy_inertcolnorm / (max(heavy_inertcolnorm) / 2)
+      }
+      
+      limglobal <- setlimits2D(minX = min(c(heavycol[, 1], lightcol[, 1])), maxX = max(c(heavycol[, 1], lightcol[, 1])), 
+                               minY = min(c(heavycol[, 2], lightcol[, 2])), maxY = max(c(heavycol[, 2], lightcol[, 2])),
                                origin = adegtot$porigin$origin, aspect.ratio = adegtot$paxes$aspectratio, includeOr = adegtot$porigin$include)
     }
     

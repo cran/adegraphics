@@ -1,4 +1,4 @@
-70ee5d3ab6d254580f16286072e7abce *DESCRIPTION
+de7d57ec6f274f1ec48a9061e24ecb2a *DESCRIPTION
 97bd6e1991e8e420f9ed2198d2f0f84e *NAMESPACE
 404aa68759e861b3a9c94315182c4fec *R/ADEg.C1.R
 f9398e5cc9c57c5c4b6835dde14f7bc5 *R/ADEg.R
@@ -44,12 +44,12 @@ de228249670c7f1395b72653b4549fdc *R/addline.R
 00678a7575a2e72f0949c933b17429dc *R/addsegment.R
 8797c2abbfca5f244711dd12809ae1f5 *R/addtext.R
 5c21e6a21545a45fbdbcea330b1d8c0d *R/ade4-kplot.R
-0dc5510a8372f6b3c59a55ce75a965a7 *R/ade4-plot.R
+51328ad52a6f3d2eb02f1c08d13da2d6 *R/ade4-plot.R
 e3d687a7561d04b84091413089be2f83 *R/ade4-scatter.R
-71b99f246d71e23ec2de3f0c77b939f5 *R/ade4-score.R
+4a8f3c8fccf347b5389674886ad19e23 *R/ade4-score.R
 970d295db2936d608f06cbd2ece30b50 *R/adeGsenv.R
 a2a46c68ed91b8cc76b2b9064b76bd82 *R/genericMethod.R
-decdddc63f0a8b99951d63525fdc9ea9 *R/multiplot.R
+79a5cfbcf1f12f4227465b71ac2fd520 *R/multiplot.R
 9a4bc8d4f6aaee6649e41e90878a188e *R/panelfunctions.R
 cd3035aad7ee190549860f64ae62517e *R/parameter.R
 a9ba768a5e37c3ae5d61ed0c92ebb3fc *R/s.Spatial.R
@@ -62,7 +62,7 @@ bf8d58f56fec3d532e6611ee839eb1b6 *R/utilstriangle.R
 93a841cfdbdad7867ecf901484cb4d59 *inst/CITATION
 04415e8f14da2aa15ba85a78303903da *inst/doc/adegraphics.R
 ddb984597bfc9aed5360750550c3d5b6 *inst/doc/adegraphics.Rmd
-8f9f35ba6affeb0318d58274dde99f0b *inst/doc/adegraphics.html
+b04844ba7a81928b26c67e3cbae99f78 *inst/doc/adegraphics.html
 5598610d87d39c76f4655ded0eb71939 *man/ADEg-class.Rd
 04d2d39bbab2e82a441b1dbb4f996e29 *man/ADEg.C1-class.Rd
 fe42debb511ab4a929b9029778b4fdac *man/ADEg.S1-class.Rd
@@ -115,7 +115,7 @@ dedf78380758f45ca0e207941931bf5d *man/adeg.panel.hist.Rd
 9c0d74adc122976f8d165cf94525a267 *man/adeg.panel.values.Rd
 4f71081c62ce518b3f8ce82f6f57ed32 *man/adegpar.Rd
 b236f2fcf939e84c32c2f12947a6d646 *man/adegraphics-internal.Rd
-4e5b5d2aa132bc92f0b9818ffefbf0ab *man/adegraphics-package.Rd
+bfc9ceff62e4a419903ad23d8beb2bd3 *man/adegraphics-package.Rd
 f67375b3996b3c8475123c129aa99ff8 *man/cbindADEg.Rd
 3ff9c210f3c3ff6f1fb07a0824bf8359 *man/changelatticetheme.Rd
 3685372b4e0b9847d9cc4c002d245eb4 *man/getcall-methods.Rd
@@ -123,7 +123,7 @@ f67375b3996b3c8475123c129aa99ff8 *man/cbindADEg.Rd
 349c1d1984cfd9297fc1cd48c1658b7a *man/layout2position.Rd
 54125b8cd7e930803ed18aae6196b54a *man/panel-methods.Rd
 18e0d059c1a7d391f979298ecc1e5ede *man/plot.Rd
-1f394e80e3fb1f5a64e452e3a7704de0 *man/plot.inertia.Rd
+16339992f1ed660c6fb1da8ce27399bd *man/plot.inertia.Rd
 22f22e39e74120ce0473c5bae267d26d *man/plotEig.Rd
 8c1d6460e342bf764802ea0a1b4377e9 *man/prepare-methods.Rd
 b297ce96aa3a1535f151bbe5c9ad85fa *man/s.Spatial.Rd
@@ -151,7 +151,7 @@ f978ad297d26ea7934c1b502c6446690 *man/s1d.hist.Rd
 06bc6632401967ed221f319f9e087aed *man/s1d.interval.Rd
 c33b37cb982dabf45d9a2e6a7104c2fa *man/s1d.label.Rd
 1eb668e640b0ef5f01803e7b054756a7 *man/s1d.match.Rd
-ce346255dced36dcf23801268c8b7325 *man/setlimits1D.Rd
+62a318294a166b0efca13ab3723763ba *man/setlimits1D.Rd
 d521408a977531b8d58c7c7e29ea8f1b *man/sortparamADEg.Rd
 e0f5a596dd873f9a49f36532fffef83b *man/superpose.Rd
 1b2d4e5770016736118a9cbde8ecde89 *man/table.image.Rd
