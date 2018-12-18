@@ -1,8 +1,8 @@
-de7d57ec6f274f1ec48a9061e24ecb2a *DESCRIPTION
-97bd6e1991e8e420f9ed2198d2f0f84e *NAMESPACE
+d5d1e8e8fc8a0cc525b9d07427c800c7 *DESCRIPTION
+be0caf5045e6701b6aeb1f924cbe4f22 *NAMESPACE
 404aa68759e861b3a9c94315182c4fec *R/ADEg.C1.R
 f9398e5cc9c57c5c4b6835dde14f7bc5 *R/ADEg.R
-d09b30872aa584c35c33509b0c8e382e *R/ADEg.S1.R
+b0d456702948c478289e233bb2d6821c *R/ADEg.S1.R
 d916eea4f881a3272ad03b91e0fc6965 *R/ADEg.S2.R
 2545695c9bb86d7dff7813f355bb224d *R/ADEg.T.R
 11de1d5d11ee4e59d3c865b797092e92 *R/ADEg.Tr.R
@@ -10,9 +10,9 @@ d916eea4f881a3272ad03b91e0fc6965 *R/ADEg.S2.R
 49115ad780cba879d84a095b41613310 *R/C1.barchart.R
 1f4103b624811d0b729c057dc6867bc7 *R/C1.curve.R
 76136e17a4e5d68fe309c19edc1be83d *R/C1.curves.R
-2cbfd6d54007e341e49f17f4811b332e *R/C1.density.R
+021e4d30b8989725549293b44d04ef82 *R/C1.density.R
 f798f96b582b953940858322f83d8b7e *R/C1.dotplot.R
-1ba3fedc2ff31cedae8acbbf3c65b4eb *R/C1.gauss.R
+2dd8ac7a7eb0c1d6d5e5f479c40e8f0d *R/C1.gauss.R
 e9057d5301f4fa57dbdaf86117517f71 *R/C1.hist.R
 1ca0f312a9aa8ae5be1e1e0845820d87 *R/C1.interval.R
 e9fb52648a715b8569c875be01d80fd4 *R/S1.boxplot.R
@@ -50,7 +50,7 @@ e3d687a7561d04b84091413089be2f83 *R/ade4-scatter.R
 970d295db2936d608f06cbd2ece30b50 *R/adeGsenv.R
 a2a46c68ed91b8cc76b2b9064b76bd82 *R/genericMethod.R
 79a5cfbcf1f12f4227465b71ac2fd520 *R/multiplot.R
-9a4bc8d4f6aaee6649e41e90878a188e *R/panelfunctions.R
+ab0bdcc51f083a8c2b8abe52da370e8e *R/panelfunctions.R
 cd3035aad7ee190549860f64ae62517e *R/parameter.R
 a9ba768a5e37c3ae5d61ed0c92ebb3fc *R/s.Spatial.R
 6c7a052f50c7c79661a8df326c0ceceb *R/utils.R
@@ -58,11 +58,11 @@ a9ba768a5e37c3ae5d61ed0c92ebb3fc *R/s.Spatial.R
 cadc907d6b204acff6fd94143b178b4c *R/utilsclass.R
 800f764310cebf74dbb286040c08773d *R/utilskey.R
 bf8d58f56fec3d532e6611ee839eb1b6 *R/utilstriangle.R
-033d5839ea2b26bdde2a3c498fba2ca5 *build/vignette.rds
+ec9aea9973668096076c9e94d0940b7d *build/vignette.rds
 93a841cfdbdad7867ecf901484cb4d59 *inst/CITATION
 04415e8f14da2aa15ba85a78303903da *inst/doc/adegraphics.R
 ddb984597bfc9aed5360750550c3d5b6 *inst/doc/adegraphics.Rmd
-b04844ba7a81928b26c67e3cbae99f78 *inst/doc/adegraphics.html
+55c5c0051265fe08157e876a8362ae1e *inst/doc/adegraphics.html
 5598610d87d39c76f4655ded0eb71939 *man/ADEg-class.Rd
 04d2d39bbab2e82a441b1dbb4f996e29 *man/ADEg.C1-class.Rd
 fe42debb511ab4a929b9029778b4fdac *man/ADEg.S1-class.Rd
@@ -115,7 +115,7 @@ dedf78380758f45ca0e207941931bf5d *man/adeg.panel.hist.Rd
 9c0d74adc122976f8d165cf94525a267 *man/adeg.panel.values.Rd
 4f71081c62ce518b3f8ce82f6f57ed32 *man/adegpar.Rd
 b236f2fcf939e84c32c2f12947a6d646 *man/adegraphics-internal.Rd
-bfc9ceff62e4a419903ad23d8beb2bd3 *man/adegraphics-package.Rd
+c949021198b61274b4d4b04a7385f5df *man/adegraphics-package.Rd
 f67375b3996b3c8475123c129aa99ff8 *man/cbindADEg.Rd
 3ff9c210f3c3ff6f1fb07a0824bf8359 *man/changelatticetheme.Rd
 3685372b4e0b9847d9cc4c002d245eb4 *man/getcall-methods.Rd
@@ -179,7 +179,7 @@ b11418f95ee8fc6ad79d617175c91efc *tests/s.traject.R
 2391641d0049c4e52f28f7fb306400e1 *tests/s.value.R
 0249418d2c4dd0f0de9d3fac737f65e7 *tests/s1d.boxplot.R
 2a99ba9860010454a83d309c30cce4c9 *tests/s1d.class.R
-540d5f93738afe0ce59787b12900ac15 *tests/s1d.density.R
+a01a1e74736e70b7c97f7a1f32e5fc57 *tests/s1d.density.R
 d923871e6c60ba04e736bb5e5dc9a4bd *tests/s1d.distri.R
 cd1ee4bb8abc725fe9eb029172392749 *tests/s1d.gauss.R
 de8d985d9eff6b46497e9fb748ffb6fd *tests/s1d.hist.R
