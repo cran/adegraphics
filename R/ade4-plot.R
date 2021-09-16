@@ -1231,7 +1231,7 @@
   g31 <- do.call("s.label", c(list(dfxy = substitute(x$C.li), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[3]][[1]]))
   g32 <- do.call("plotEig", c(list(eigvalue = substitute(x$C.eig), nf = 1:x$C.nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData), sortparameters[[3]][[2]]))
   g3 <- do.call("insert", list(g32@Call, g31@Call, posi = "bottomleft", plot = FALSE, ratio = 0.25, inset = 0))
-  g4 <- do.call("s.corcircle", c(list(dfxy = substitute(x$C.T4[x$T4[, 2] == 1, ]), xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
+  g4 <- do.call("s.corcircle", c(list(dfxy = substitute(x$C.T4[x$T4[, 2] == 1, ]), xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters[[4]]))
   
   ## ADEgS creation
   lay <- matrix(c(1, 2, 3, 4), 2, 2)
@@ -1456,7 +1456,7 @@
     stop("Non convenient yax")
   
   adegtot <- adegpar()
-  position <- match.arg(posieig[1], choices = c("bottomleft", "bottomright", "topleft", "topright", "none"), several.ok = FALSE)
+  position <- .getposition(posieig[1:min(2, length(posieig))])
   type <- match.arg(type)[1]
   contrib <- match.arg(contrib)[1]
   
@@ -1628,48 +1628,48 @@
   
   
   ## displaying of the eigen values
-  if(position != "none")
+  if(!is.null(position))
     geig <- do.call("plotEig", c(list(eigvalue = call("$", ori[[2]], "eig"), nf = 1:evTab$nf, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$eig))
   
   ## function to create the graphics about the row' contribution (individuals) on axes
-  f_row <- function(posi = "none", pos){
-    graphnames <- c(if(length(lightrow) > 0) {"light_row"}, "heavy_row", if(posi != "none") {"eig"})
+  f_row <- function(posi = NULL, pos){
+    graphnames <- c(if(length(lightrow) > 0) {"light_row"}, "heavy_row", if(!is.null(posi)) {"eig"})
     
-    g1 <- do.call("s.label", c(list(dfxy = lightrow, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$light_row))
+    g1 <- do.call("s.label", c(list(dfxy = lightrow, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$light_row))
     if(type == "label")
-      g2 <- do.call("s.label", c(list(dfxy = heavyrow, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_row))
+      g2 <- do.call("s.label", c(list(dfxy = heavyrow, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_row))
     else
-      g2 <- do.call("s.class", c(list(dfxy = cont_row, fac = fac_row, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_row))
+      g2 <- do.call("s.class", c(list(dfxy = cont_row, fac = fac_row, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_row))
     grow <- do.call("superpose", list(g1, g2))
     grow@Call <- call("superpose", list(g1@Call, g2@Call))
     
-    if(posi != "none")
+    if(!is.null(posi))
       grow <- do.call("insert", list(geig, grow, posi = posi, plot = FALSE, ratio = 0.25))
     names(grow) <- graphnames
     return(grow)
   }
   
   # function to create the graphics about the columns' contribution (variables) on axes
-  f_col <- function(posi = "none", pos) {
-    graphnames <- c(if(length(lightcol) > 0) {"light_col"}, "heavy_col", if(posi != "none") {"eig"})
+  f_col <- function(posi = NULL, pos) {
+    graphnames <- c(if(length(lightcol) > 0) {"light_col"}, "heavy_col", if(!is.null(posi)) {"eig"})
     
-    g3 <- do.call("s.label", c(list(dfxy = lightcol, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$light_col))
+    g3 <- do.call("s.label", c(list(dfxy = lightcol, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$light_col))
     if(type == "label")
-      g4 <- do.call("s.label", c(list(dfxy = heavycol, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_col))
+      g4 <- do.call("s.label", c(list(dfxy = heavycol, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_col))
     else
-      g4 <- do.call("s.class", c(list(dfxy = cont_col, fac = fac_col, xax = 1, yax = 2, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_col))
+      g4 <- do.call("s.class", c(list(dfxy = cont_col, fac = fac_col, xax = xax, yax = yax, plot = FALSE, storeData = storeData, pos = pos - 2), sortparameters$heavy_col))
     gcol <- do.call("superpose", list(g3, g4))
     gcol@Call <- call("superpose", list(g3@Call, g4@Call))
     
-    if(posi != "none")
+    if(!is.null(posi))
       gcol <- do.call("insert", list(geig, gcol, posi = posi, plot = FALSE, ratio = 0.25))
     names(gcol) <- graphnames
     return(gcol)
   }
   
   ## function to create a layout of the graphics about the contribution of rows (individuals) and columns (variables) on axes
-  f_both <- function(posi = "none", pos) {
-    object <- do.call("cbindADEg", c(list(f_row(posi = "none", pos = pos - 1), f_col(posi = posi, pos = pos - 1))))
+  f_both <- function(posi = NULL, pos) {
+    object <- do.call("cbindADEg", c(list(f_row(posi = NULL, pos = pos - 1), f_col(posi = posi, pos = pos - 1))))
     names(object) <- c("row", "col")
     return(object)
   }
@@ -1770,3 +1770,96 @@
     print(object)
   invisible(object)
 }
+
+"plot.bcaloocv" <- function (x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
+    if (!inherits(x, "bcaloocv")) 
+        stop("Use only with 'bcaloocv' objects")
+    bca1 <- eval(x$call[[2]])
+    fac1 <- eval(bca1$call[[3]])
+    if (bca1$nf == 1) {
+        warnings("One axis only : not yet implemented")
+        return(invisible())
+    }
+	# Permutation test
+	rt1 <- ade4::randtest(bca1)
+	# Compute cross-validated coordinates
+	Oijbga <- x$Oij_bca
+	Oijxval <- x$Oij_XVal
+	dOij <- x$DeltaOij
+
+	## sort parameters for each graph
+	graphsnames <- c("BCA", "XVal")
+	sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
+
+	## default values for parameters
+	params <- list()
+	params[[1]] <- list(psub = list(text = "BCA"), pbackground = list(box = TRUE), plabels = list(cex = 1.25))
+	params[[2]] <- list(psub = list(text = "Cross-validation"), pbackground = list(box = TRUE), plabels = list(cex = 1.25))
+	names(params) <- graphsnames
+	sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+
+	# Character string: graph title, permutation test p-value and variance ratio
+	pst1 <- paste0("Permutation test p = ", rt1$pvalue, ", Expl.Var = ", round(bca1$ratio, 2), ", Oij = ", round(Oijbga,2))
+	# Draw BGA factor map
+	sc1 <- do.call("s.class", c(list(dfxy = bca1$ls[,c(xax, yax)], fac = fac1, col = TRUE, psub.text = pst1, ellipseSize = 0, chullSize = 1, plot = FALSE), storeData = storeData, pos = pos - 2, sortparameters[[1]]))
+	# Compute cross-validated coordinates
+	# Character string for graph title
+	pst2 <- paste0("Cross-validation Oij = ", round(Oijxval,2), ", dOij = ", round(dOij), "%")
+	# Cross-validated factor map
+	sc2 <- do.call("s.class", c(list(x$XValCoord[,c(xax, yax)], fac1, col = TRUE, psub.text = pst2, ellipseSize = 0, chullSize = 1, plot = FALSE), storeData = storeData, pos = pos - 2, sortparameters[[2]]))
+	# Display both factor maps side by side
+	sc2 <- update(sc2, xlim = sc1@g.args$xlim, ylim = sc1@g.args$ylim)
+	lay <- c(1, 2)
+	object <- new(Class = "ADEgS", ADEglist = list(sc1, sc2), positions = layout2position(lay), add = matrix(0, ncol = 2, nrow = 2), Call = match.call() )
+	names(object) <- graphsnames
+	if(plot)
+		print(object)
+	invisible(object)
+}
+
+"plot.discloocv" <- function (x, xax = 1, yax = 2, pos = -1, storeData = TRUE, plot = TRUE, ...) {
+    if (!inherits(x, "discloocv")) 
+        stop("Use only with 'discloocv' objects")
+    disc1 <- eval(x$call[[2]])
+    fac1 <- eval(disc1$call[[3]])
+    if (disc1$nf == 1) {
+        warnings("One axis only : not yet implemented")
+        return(invisible())
+    }
+	# Permutation test
+	rt1 <- ade4::randtest(disc1)
+	# Compute cross-validated coordinates
+	Oijdisc <- x$Oij_disc
+	Oijxval <- x$Oij_XVal
+	dOij <- x$DeltaOij
+
+	## sort parameters for each graph
+	graphsnames <- c("Discrimin", "XVal")
+	sortparameters <- sortparamADEgS(..., graphsnames = graphsnames)
+
+	## default values for parameters
+	params <- list()
+	params[[1]] <- list(psub = list(text = "Discrimin"), pbackground = list(box = TRUE), plabels = list(cex = 1.25))
+	params[[2]] <- list(psub = list(text = "Cross-validation"), pbackground = list(box = TRUE), plabels = list(cex = 1.25))
+	names(params) <- graphsnames
+	sortparameters <- modifyList(params, sortparameters, keep.null = TRUE)
+
+	# Character string: graph title, permutation test p-value and variance ratio
+	pst1 <- paste0("Permutation test p = ", rt1$pvalue, ", Oij = ", round(Oijdisc,2))
+	# Draw discrimin factor map
+	sc1 <- do.call("s.class", c(list(dfxy = disc1$li[,c(xax, yax)], fac = fac1, col = TRUE, psub.text = pst1, ellipseSize = 0, chullSize = 1, plot = FALSE), storeData = storeData, pos = pos - 2, sortparameters[[1]]))
+	# Compute cross-validated coordinates
+	# Character string for graph title
+	pst2 <- paste0("Cross-validation Oij = ", round(Oijxval,2), ", dOij = ", round(dOij), "%")
+	# Cross-validated factor map
+	sc2 <- do.call("s.class", c(list(x$XValCoord[,c(xax, yax)], fac1, col = TRUE, psub.text = pst2, ellipseSize = 0, chullSize = 1, plot = FALSE), storeData = storeData, pos = pos - 2, sortparameters[[2]]))
+	# Display both factor maps side by side
+	sc2 <- update(sc2, xlim = sc1@g.args$xlim, ylim = sc1@g.args$ylim)
+	lay <- c(1, 2)
+	object <- new(Class = "ADEgS", ADEglist = list(sc1, sc2), positions = layout2position(lay), add = matrix(0, ncol = 2, nrow = 2), Call = match.call() )
+	names(object) <- graphsnames
+	if(plot)
+		print(object)
+	invisible(object)
+}
+
