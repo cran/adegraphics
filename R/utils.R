@@ -244,7 +244,7 @@ sortparamADEg <- function(...) {
     dots <- list(...)
   
   classtest <- try(list(...), silent = TRUE)
-  if(class(classtest) == "try-error")
+  if(inherits(classtest, "try-error"))
     stop("wrong parameters list, error in sortparamADEg")
   
   trellis <- list()
@@ -296,7 +296,7 @@ sortparamADEg <- function(...) {
 
 
 ########################################################################
-###                         FROM MAPTOOLS                        #######
+###        FROM CAR >= 3.1-1 (or MAPTOOLS before 2022-10-22)     #######
 ########################################################################
 
 .pointLabel <- function(x, y = NULL, labels, width, height, limits, xyAspect, allowSmallOverlap = FALSE, trace = FALSE) {
