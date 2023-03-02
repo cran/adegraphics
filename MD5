@@ -1,4 +1,4 @@
-846e4749690a0dd6720f0cab4d6e80ee *DESCRIPTION
+7527d84c85546a91f22d0d7d22bcc639 *DESCRIPTION
 7a2bb639515e90741a3b754f4dfb53c5 *NAMESPACE
 6f74ca1d6869610883364261fdb3a85b *R/ADEg.C1.R
 f9398e5cc9c57c5c4b6835dde14f7bc5 *R/ADEg.R
@@ -59,10 +59,10 @@ cadc907d6b204acff6fd94143b178b4c *R/utilsclass.R
 486605c9cd6485291c4e3c7c486b518e *R/utilskey.R
 bf8d58f56fec3d532e6611ee839eb1b6 *R/utilstriangle.R
 e0b7cc6f6dace8b783bdae4551f406a3 *build/vignette.rds
-dfe801c641eab35e8ce20be6b2258c36 *inst/CITATION
+3f94c9abdede35f61e9df43ddbea1165 *inst/CITATION
 7cd58135911cbc67e40b4a8f006a21c4 *inst/doc/adegraphics.R
 378b45ed2a73ebcc8aa54a8ed8f8c17f *inst/doc/adegraphics.Rmd
-2c895a902b0e32e6c5f869b9b44a628c *inst/doc/adegraphics.html
+55e3c0a6cbd55b081a4b88f80dda4ab3 *inst/doc/adegraphics.html
 5598610d87d39c76f4655ded0eb71939 *man/ADEg-class.Rd
 04d2d39bbab2e82a441b1dbb4f996e29 *man/ADEg.C1-class.Rd
 fe42debb511ab4a929b9029778b4fdac *man/ADEg.S1-class.Rd
@@ -103,9 +103,9 @@ eebd649933116bbd0a3d157103e3893c *man/Tr.label-class.Rd
 5ae2ceb127ac94164bccb3028ad122a5 *man/Tr.traject-class.Rd
 0c7b0685e07ffcc4b795eebd2cb3db38 *man/add.ADEg.Rd
 1fc0b2b157d5b97948a8e93e31769f5d *man/addhist.Rd
-fc99b420caa72d987023cd84587624b2 *man/addline.Rd
+95a74bd74a3336f1d826fc85a78f7007 *man/addline.Rd
 8d5f5a7796f7b116d46e1eaaf04ae107 *man/addpoint.Rd
-8cadac72377b748b7a6ee75522b8acc1 *man/addsegment.Rd
+bd3a4ec328c07829413dbf36b60da536 *man/addsegment.Rd
 98bf035a866432768e1523cc6d0cca7e *man/addtext.Rd
 7663b968ca32d6da4e170a0499a66d4b *man/adeg.panel.Spatial.Rd
 dedf78380758f45ca0e207941931bf5d *man/adeg.panel.hist.Rd
@@ -164,7 +164,7 @@ c3afe7c260dd4eca59f03ca2097fafec *man/zoom.Rd
 115debefa2f321aaf1696a757e9a4b83 *tests/add.R
 9da41641202739458e8fa677858570ec *tests/ade4-functions.R
 5e517dea83edac5c1a447f6ed495010a *tests/adegraphics.R
-7c29d29d5b48442162054f2d3e76d8e9 *tests/nbgraph.R
+b8ee61fbbd40608216a9f68689d4d362 *tests/nbgraph.R
 9ff8e8725a1f061ee0997e7525bba408 *tests/panelSpatial.R
 f89edc95fba7af6ec5f90920e55512a2 *tests/parameter.R
 6ffcf224c4cca0787627c920998a151d *tests/s.arrow.R

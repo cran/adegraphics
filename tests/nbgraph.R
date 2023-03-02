@@ -1,12 +1,13 @@
 library(ade4)
 library(adegraphics)
+library(sp)
 library(spdep)
 library(lattice)
 
 pdf("nbgraph.pdf")
 
 data(elec88, package = "ade4")
-coords <- coordinates(elec88$Spatial)
+coords <- sp::coordinates(elec88$Spatial)
 
 xyplot(coords[, 2] ~ coords[, 1],
   		 panel = function(...) {adeg.panel.nb(elec88$nb, coords)})
