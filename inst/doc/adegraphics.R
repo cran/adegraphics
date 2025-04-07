@@ -57,8 +57,8 @@ g6 <- superpose(g5, g3, plot = TRUE) ## equivalent to g5 + g3
 class(g6)
 
 ## ----label=chunk9, eval=FALSE-------------------------------------------------
-#  g5
-#  s.label(pca1$li, add = TRUE)
+# g5
+# s.label(pca1$li, add = TRUE)
 
 ## ----label=plot8, fig.width=6, fig.height=6-----------------------------------
 rbindADEg(cbindADEg(g2, g3), cbindADEg(g5, g6), plot = TRUE)
@@ -303,17 +303,17 @@ g29 <- s1d.density(score1, fac1, col = c(2, 4), ppolygons.alpha = 0.2,
 ADEgS(c(g26, g27, g28, g29), layout = c(2, 2))
 
 ## ----label=plot37, fig.width=6, fig.height=3----------------------------------
-# if(require(Guerry)) {
-#   library(sp)
-#   data(gfrance85)
-#   region.names <- data.frame(gfrance85)[, 5]
-#   col.region <- colors()[c(149, 254, 468, 552, 26)]
-#   g30 <- s.class(coordinates(gfrance85), region.names, porigin.include = FALSE, plot = FALSE)
-#   g31 <- s.class(coordinates(gfrance85), region.names, ellipseSize = 0, starSize = 0, 
-#                  Sp = gfrance85, pgrid.draw = FALSE, pSp.col = col.region[region.names], pSp.alpha = 0.4, 
-#                  plot = FALSE)
-#   ADEgS(c(g30, g31), layout = c(1, 2))
-# }
+if(require(Guerry)) {
+  library(sp)
+  data(gfrance85)
+  region.names <- data.frame(gfrance85)[, 5]
+  col.region <- colors()[c(149, 254, 468, 552, 26)]
+  g30 <- s.class(coordinates(gfrance85), region.names, porigin.include = FALSE, plot = FALSE)
+  g31 <- s.class(coordinates(gfrance85), region.names, ellipseSize = 0, starSize = 0,
+                 Sp = gfrance85, pgrid.draw = FALSE, pSp.col = col.region[region.names], pSp.alpha = 0.4,
+                 plot = FALSE)
+  ADEgS(c(g30, g31), layout = c(1, 2))
+}
 
 ## ----label=plot38, fig.width=6, fig.height=4----------------------------------
 # if(require(Guerry)) {
